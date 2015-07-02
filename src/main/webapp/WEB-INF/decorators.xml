@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<decorators defaultdir="/layouts">
+    <excludes>
+        <pattern>/ajax_*</pattern>
+    </excludes>
+
+    <decorator name="default" page="default.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+</decorators>
