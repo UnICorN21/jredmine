@@ -36,6 +36,7 @@ public class Issue implements java.io.Serializable {
 	private Timestamp updateTime;
 	private Date startDate;
 	private Date dueDate;
+	private Double estimatedTime;
 	private Integer progress;
 	private String category;
 	private Integer targetVersion;
@@ -73,7 +74,7 @@ public class Issue implements java.io.Serializable {
 	public Issue(User userByAssigner, Issue parent, Project project,
 			User userByAssignee, String subject, String description,
 			Priority priority, Status status, Tracker tracker,
-			Timestamp createTime, Timestamp updateTime, Date startDate,
+			Timestamp createTime, Timestamp updateTime, Double estimatedTime, Date startDate,
 			Date dueDate, Integer progress, String category,
 			Integer targetVersion, Set<Issue> issues) {
 		this.userByAssigner = userByAssigner;
@@ -87,6 +88,7 @@ public class Issue implements java.io.Serializable {
 		this.tracker = tracker;
 		this.createTime = createTime;
 		this.updateTime = updateTime;
+		this.estimatedTime = estimatedTime;
 		this.startDate = startDate;
 		this.dueDate = dueDate;
 		this.progress = progress;
@@ -211,6 +213,15 @@ public class Issue implements java.io.Serializable {
 
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	@Column(name = "estimated_time", length = 5)
+	public Double getEstimatedTime() {
+		return estimatedTime;
+	}
+
+	public void setEstimatedTime(Double estimatedTime) {
+		this.estimatedTime = estimatedTime;
 	}
 
 	@Temporal(TemporalType.DATE)

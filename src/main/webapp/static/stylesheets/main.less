@@ -413,6 +413,49 @@ header {
     }
   }
 
+  .split-content {
+    overflow: auto;
+  }
+
+  .split-content-left {
+    float: left;
+    width: 49%;
+  }
+
+  .split-content-right {
+    float: right;
+    width: 49%;
+  }
+
+  legend { color: #484848; }
+
+  // For temp placeholder
+  input#issue_notes { width: 90%; }
+
+  fieldset.tabular {
+    border: 1px solid #e4e4e4;
+    margin: 0;
+
+    label {
+      font-weight: bold;
+      float: left;
+      text-align: right;
+      margin-left: -180px;
+      width: 175px;
+    }
+
+    span.required { color: #bb0000; }
+
+    p {
+      margin: 0;
+      padding: 3px 0 3px 180px;
+      min-height: 1.8em;
+      clear: left;
+    }
+
+    input#time_entry_comments { width: 90%; }
+  }
+
   h2 {
     color: #555;
     font-size: 20px;

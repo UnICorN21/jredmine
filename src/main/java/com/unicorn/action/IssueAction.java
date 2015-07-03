@@ -1,17 +1,11 @@
 package com.unicorn.action;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.unicorn.bean.EditedIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
 import com.unicorn.service.IssueService;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.json.annotations.JSON;
+import org.apache.struts2.convention.annotation.*;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Resource;
@@ -32,6 +26,8 @@ public class IssueAction extends BaseAction<Issue> {
     private String projectId;
 
     private Issue issue;
+
+    private EditedIssue editedIssue;
 
     private int pageIdx;
 
@@ -71,6 +67,24 @@ public class IssueAction extends BaseAction<Issue> {
     @Action(value = "single_issue", results = @Result(location = "/single_issue.jsp"))
     public String singleIssue() {
         issue = issueService.getIssue(issue.getId());
+        return SUCCESS;
+    }
+
+    public EditedIssue getEditedIssue() {
+        return editedIssue;
+    }
+
+    public void setEditedIssue(EditedIssue editedIssue) {
+        this.editedIssue = editedIssue;
+    }
+
+    @Action(value = "edit_issue", results = @Result(location = "/single_issue.jsp"))
+    public String editIssue() {
+
+        issue = issueService.getIssue(issue.getId());
+
+        System.out.println("give me a breakpoint");
+
         return SUCCESS;
     }
 }

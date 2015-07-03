@@ -82,6 +82,7 @@
       </s:if>
     </div>
   </header>
+  <script src="/static/javascripts/util.js"></script>
   <script src="/static/javascripts/header.js"></script>
 </body>
 </html>

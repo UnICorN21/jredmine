@@ -15,6 +15,5 @@
       <a href="/">Huxley</a>
     </div>
   </footer>
-  <script src="/static/javascripts/util.js"></script>
 </body>
 </html>

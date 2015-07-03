@@ -28,7 +28,7 @@
   <div class="content">
     <s:if test="%{null != #session.userId}">
       <div class="contextual">
-        <a class="icon icon-edit" href="">Edit</a>
+        <a class="icon icon-edit" onclick="util.showAndScrollTo('update'); return false;" href="">Edit</a>
         <a class="icon icon-time-add" href="">Log time</a>
         <s:if test="true">
           <a class="icon icon-fav-off" href="">Watch</a>
@@ -143,8 +143,177 @@
     </div>
     <div id="history">
       <h3>History</h3>
-      <s:debug></s:debug>
     </div>
+    <s:if test="%{null != #session.userId}">
+      <div id="update" style="display: none">
+        <h3>Edit</h3>
+        <form id="issue-form" class="edit_issue" enctype="multipart/form-data" action="/edit_issue.do" method="post">
+          <input type="hidden" name="id" value="${id}">
+          <div class="box">
+            <s:set name="trackerType" value="{'Feature', 'Bug', 'Support'}"/>
+            <s:set name="statusType" value="{'New', 'In Progress', 'Resolved', 'Feedback', 'Closed'}"/>
+            <s:set name="priorityType" value="{'Normal', 'Low', 'High', 'Urgent', 'Immediate'}"/>
+            <s:set name="doneRatio" value="{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}"/>
+            <fieldset class="tabular">
+              <legend>Change properties</legend>
+              <div class="all_attributes">
+                <p>
+                  <label for="issue_project_id">
+                    Project
+                    <span class="required">*</span>
+                  </label>
+                  <select id="issue_project_id" name="editedIssue.projectId]">
+                    <option value="${project.id}">${project.name}</option>
+                  </select>
+                </p>
+                <p>
+                  <label for="issue_tracker_id">
+                    Tracker
+                    <span class="required">*</span>
+                  </label>
+                  <select id="issue_tracker_id" name="editedIssue.tracker">
+                    <s:iterator value="#trackerType" var="type">
+                      <s:if test="%{#type == #tracker}">
+                        <option class="selected">${type}</option>
+                      </s:if>
+                      <s:else>
+                        <option>${type}</option>
+                      </s:else>
+                    </s:iterator>
+                  </select>
+                </p>
+                <p>
+                  <label for="issue_subject">
+                    Subject
+                    <span class="required">*</span>
+                  </label>
+                  <input type="text" size="80" maxlength="255" value="${subject}" name="editedIssue.subject" id="issue_subject">
+                </p>
+                <p>
+                  <label for="issue_description">Description</label>
+                  <a href="#" class="icon icon-edit"></a>
+                  <span id="issue_description" style="display: none"></span>
+                </p>
+                <div id="attributes" class="attributes">
+                  <div class="split-content">
+                    <div class="split-content-left">
+                      <p>
+                        <label for="issue_status_id">
+                          Status
+                          <span class="required">*</span>
+                        </label>
+                        <select id="issue_status_id" name="editedIssue.status">
+                          <s:iterator value="#statusType" var="type">
+                            <s:if test="%{#type == #status}">
+                              <option selected="selected">${type}</option>
+                            </s:if>
+                            <s:else>
+                              <option>${type}</option>
+                            </s:else>
+                          </s:iterator>
+                        </select>
+                      </p>
+                      <p>
+                        <label for="issue_priority_id">
+                          Priority
+                          <span class="required">*</span>
+                        </label>
+                        <select id="issue_priority_id" name="editedIssue.priority">
+                          <s:iterator value="#priorityType" var="type">
+                            <s:if test="%{#type == #priority}">
+                              <option selected="selected">${type}</option>
+                            </s:if>
+                            <s:else>
+                              <option>${type}</option>
+                            </s:else>
+                          </s:iterator>
+                        </select>
+                      </p>
+                      <p>
+                        <label for="issue_assignee_id">Assignee</label>
+                        <select id="issue_assignee_id" name="editedIssue.assigneeId">
+                          <s:iterator value="%{project.developers}" var="developer">
+                            <s:if test="%{#developer.id == #session.userId}">
+                              <option selected="selected">${developer.username}</option>
+                            </s:if>
+                            <s:else>
+                              <option>${developer.username}</option>
+                            </s:else>
+                          </s:iterator>
+                        </select>
+                      </p>
+                    </div>
+                    <div class="split-content-right">
+                      <p>
+                        <label for="issue_parent_issue_id">Parent task</label>
+                        <input id="issue_parent_issue_id" type="text" size="10"
+                               name="issue[parent_issue_id]" autocomplete="off" value="${parent.id}">
+                      </p>
+                      <p>
+                        <label for="issue_start_date">Start date</label>
+                        <input id="issue_start_date" size="10" type="text" name="editedIssue.startDate" value="${startDate}">
+                      </p>
+                      <p>
+                        <label for="issue_due_date">Due date</label>
+                        <input id="issue_due_date" size="10" type="text" name="editedIssue.dueDate" value="${dueDate}">
+                      </p>
+                      <p>
+                        <label for="issue_estimated_time">Estimated time</label>
+                        <input id="issue_estimated_time" size="3" type="text"
+                               name="editedIssue.estimatedTime" value="${estimated_time}">&nbsp;Hours
+                      </p>
+                      <p>
+                        <label for="issue_done_radio">%&nbsp;Done</label>
+                        <select id="issue_done_radio" name="editedIssue.progress">
+                          <s:iterator value="#doneRatio" var="ratio">
+                            <s:if test="%{#ratio == #progress}">
+                              <option selected="selected">${ratio}</option>
+                            </s:if>
+                            <s:else>
+                              <option>${ratio}</option>
+                            </s:else>
+                          </s:iterator>
+                        </select>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="tabular">
+              <legend>Log time</legend>
+              <div class="split-content-left">
+                <p>
+                  <label for="time_entry_hours">Spent time</label>
+                  <input id="time_entry_hours" size="6" type="text" name="editedIssue.logHours">
+                </p>
+              </div>
+              <div class="split-content-right">
+                <p>
+                  <label for="time_entry_activity_id">Activity</label>
+                  <select id="time_entry_activity_id" name="editedIssue.activityId">
+                    <!-- TODO: check and design for the `activity` module -->
+                    <option>--- Please select ---</option>
+                  </select>
+                </p>
+              </div>
+              <p>
+                <label for="time_entry_comments">Comment</label>
+                <input id="time_entry_comments" type="text" size="60" name="editedIssue.comments">
+              </p>
+            </fieldset>
+            <fieldset class="tabular">
+              <legend>Notes</legend>
+              <p>
+                <label for="issue_notes">Notes</label>
+                <input id="issue_notes" type="text" name="editedIssue.notes">
+              </p>
+            </fieldset>
+          </div>
+          <input type="submit" name="commit" value="submit" disabled/>
+        </form>
+      </div>
+    </s:if>
   </div>
   <script src="/static/javascripts/singleissue.js"></script>
 </section>
