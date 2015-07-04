@@ -71,6 +71,7 @@ public class IssueServiceImpl implements IssueService {
     public int updateIssue(FormIssue formIssue, User author, String notes) {
         Issue target = getIssue(formIssue.getId());
         FormIssue origin = new FormIssue(target);
+        if ("".equals(formIssue.getDescription())) formIssue.setDescription(target.getDescription());
         List<Pair<String, Pair<Object, Object>>> log = Utils.diff(origin, formIssue);
 
         List<Pair<String, Object>> priorities = new ArrayList<Pair<String, Object>>();
