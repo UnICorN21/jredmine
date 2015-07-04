@@ -1,8 +1,9 @@
 <%@ page import="com.opensymphony.xwork2.util.ValueStack" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="com.unicorn.Utils" %>
+<%@ page import="com.unicorn.action.IssueAction" %>
+<%@ page import="com.unicorn.domain.History" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huxley
@@ -26,10 +27,24 @@
     </ul>
   </aside>
   <div class="content">
-    <s:if test="%{null != #session.userId}">
+    <%
+      Object updateFlag = Utils.getSessionAttrAndRemoved(session, IssueAction.ISSUE_UPDATE_SUCCESS_FLAG);
+      if (null != updateFlag) {
+        if ((boolean)updateFlag) {
+    %>
+    <div class="flash notice-succeed">Successful updated.</div>
+    <%
+        } else {
+    %>
+    <div class="flash notice-failed">Update failed.</div>
+    <%
+        }
+      }
+    %>
+    <s:if test="%{null != #session.user.id}">
       <div class="contextual">
         <a class="icon icon-edit" onclick="util.showAndScrollTo('update'); return false;" href="">Edit</a>
-        <a class="icon icon-time-add" href="">Log time</a>
+        <a class="icon icon-time-add" onclick="util.showAndScrollTo('update'); return false;" href="">Log time</a>
         <s:if test="true">
           <a class="icon icon-fav-off" href="">Watch</a>
         </s:if>
@@ -101,7 +116,7 @@
         <tbody>
         <tr>
           <th class="status">Status:</th>
-          <td class="status">${status}</td>
+          <td class="status">${status.desc}</td>
           <th class="start-date">Start date:</th>
           <td class="start-date">${startDate}</td>
         </tr>
@@ -143,16 +158,40 @@
     </div>
     <div id="history">
       <h3>History</h3>
+      <s:iterator value="%{histories}" var="history" status="h">
+        <div id="change-${history.id}" class="journal">
+          <div id="note-<s:property value="#h.index+1"/>">
+            <h4>
+              <a class="journal-link" href="#note-<s:property value="#h.index+1"/>">#<s:property value="#h.index+1"/></a>
+              Updated by
+              <a class="user" href="">${history.author.username}</a>
+              <%
+                Timestamp historyLogTime = ((History)vs.findValue("history")).getLogTime();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String historyTitle = df.format(historyLogTime);
+                long historytime = historyLogTime.getTime();
+                String historyAgo = Utils.time2ago(historytime);
+              %>
+              <a title="${history.logTime}" href=""><%=historyAgo%></a>&nbsp;ago
+            </h4>
+          </div>
+          <ul class="detail">
+            <s:iterator value="#history.logs" var="logItem">
+              <li>
+                <strong>${logItem.editProperty}</strong>
+                &nbsp;changed from&nbsp;${logItem.oldValue}&nbsp;to&nbsp;${logItem.newValue}
+              </li>
+            </s:iterator>
+          </ul>
+        </div>
+      </s:iterator>
     </div>
-    <s:if test="%{null != #session.userId}">
+    <s:if test="%{null != #session.user.id}">
       <div id="update" style="display: none">
         <h3>Edit</h3>
         <form id="issue-form" class="edit_issue" enctype="multipart/form-data" action="/edit_issue.do" method="post">
-          <input type="hidden" name="id" value="${id}">
+          <input type="hidden" name="editedIssue.id" value="${id}"/>
           <div class="box">
-            <s:set name="trackerType" value="{'Feature', 'Bug', 'Support'}"/>
-            <s:set name="statusType" value="{'New', 'In Progress', 'Resolved', 'Feedback', 'Closed'}"/>
-            <s:set name="priorityType" value="{'Normal', 'Low', 'High', 'Urgent', 'Immediate'}"/>
             <s:set name="doneRatio" value="{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}"/>
             <fieldset class="tabular">
               <legend>Change properties</legend>
@@ -162,7 +201,7 @@
                     Project
                     <span class="required">*</span>
                   </label>
-                  <select id="issue_project_id" name="editedIssue.projectId]">
+                  <select id="issue_project_id" name="editedIssue.projectId" required>
                     <option value="${project.id}">${project.name}</option>
                   </select>
                 </p>
@@ -171,23 +210,17 @@
                     Tracker
                     <span class="required">*</span>
                   </label>
-                  <select id="issue_tracker_id" name="editedIssue.tracker">
-                    <s:iterator value="#trackerType" var="type">
-                      <s:if test="%{#type == #tracker}">
-                        <option class="selected">${type}</option>
-                      </s:if>
-                      <s:else>
-                        <option>${type}</option>
-                      </s:else>
-                    </s:iterator>
-                  </select>
+                  <s:select id="issue_tracker_id" name="editedIssue.tracker" value="tracker"
+                          list="@com.unicorn.domain.Issue$Tracker@values()" requiredLabel="true"
+                          listKey="name()" listValue="desc"/>
                 </p>
                 <p>
                   <label for="issue_subject">
                     Subject
                     <span class="required">*</span>
                   </label>
-                  <input type="text" size="80" maxlength="255" value="${subject}" name="editedIssue.subject" id="issue_subject">
+                  <input type="text" size="80" maxlength="255" value="${subject}"
+                         required name="editedIssue.subject" id="issue_subject">
                 </p>
                 <p>
                   <label for="issue_description">Description</label>
@@ -202,78 +235,49 @@
                           Status
                           <span class="required">*</span>
                         </label>
-                        <select id="issue_status_id" name="editedIssue.status">
-                          <s:iterator value="#statusType" var="type">
-                            <s:if test="%{#type == #status}">
-                              <option selected="selected">${type}</option>
-                            </s:if>
-                            <s:else>
-                              <option>${type}</option>
-                            </s:else>
-                          </s:iterator>
-                        </select>
+                        <s:select id="issue_status_id" name="editedIssue.status" value="status"
+                                list="@com.unicorn.domain.Issue$Status@values()" requiredLabel="true"
+                                listKey="name()" listValue="desc"/>
                       </p>
                       <p>
                         <label for="issue_priority_id">
                           Priority
                           <span class="required">*</span>
                         </label>
-                        <select id="issue_priority_id" name="editedIssue.priority">
-                          <s:iterator value="#priorityType" var="type">
-                            <s:if test="%{#type == #priority}">
-                              <option selected="selected">${type}</option>
-                            </s:if>
-                            <s:else>
-                              <option>${type}</option>
-                            </s:else>
-                          </s:iterator>
-                        </select>
+                        <s:select id="issue_priority_id" name="editedIssue.priority" value="priority"
+                                  list="@com.unicorn.domain.Issue$Priority@values()" requiredLabel="true"
+                                  listKey="name()" listValue="desc"/>
                       </p>
                       <p>
-                        <label for="issue_assignee_id">Assignee</label>
-                        <select id="issue_assignee_id" name="editedIssue.assigneeId">
-                          <s:iterator value="%{project.developers}" var="developer">
-                            <s:if test="%{#developer.id == #session.userId}">
-                              <option selected="selected">${developer.username}</option>
-                            </s:if>
-                            <s:else>
-                              <option>${developer.username}</option>
-                            </s:else>
-                          </s:iterator>
-                        </select>
+                        <%--<label for="issue_assignee_id">Assignee</label>--%>
+                        <%--<s:select id="issue_assignee_id" name="editedIssue.assigneeId" value="#session.user.id"--%>
+                                <%--list="#developers" listKey="id" listValue="username"/>--%>
                       </p>
                     </div>
                     <div class="split-content-right">
                       <p>
                         <label for="issue_parent_issue_id">Parent task</label>
                         <input id="issue_parent_issue_id" type="text" size="10"
-                               name="issue[parent_issue_id]" autocomplete="off" value="${parent.id}">
+                               name="editedIssue.parentId" autocomplete="off" value="${parent.id}">
                       </p>
                       <p>
                         <label for="issue_start_date">Start date</label>
-                        <input id="issue_start_date" size="10" type="text" name="editedIssue.startDate" value="${startDate}">
+                        <input id="issue_start_date" size="10" type="date" name="editedIssue.startDate" value="${startDate}">
                       </p>
                       <p>
                         <label for="issue_due_date">Due date</label>
-                        <input id="issue_due_date" size="10" type="text" name="editedIssue.dueDate" value="${dueDate}">
+                        <input id="issue_due_date" size="10" type="date" name="editedIssue.dueDate" value="${dueDate}">
                       </p>
                       <p>
                         <label for="issue_estimated_time">Estimated time</label>
-                        <input id="issue_estimated_time" size="3" type="text"
-                               name="editedIssue.estimatedTime" value="${estimated_time}">&nbsp;Hours
+                        <input id="issue_estimated_time" size="3" type="number"
+                               name="editedIssue.estimatedTime" value="${estimatedTime}">&nbsp;Hours
                       </p>
                       <p>
                         <label for="issue_done_radio">%&nbsp;Done</label>
-                        <select id="issue_done_radio" name="editedIssue.progress">
-                          <s:iterator value="#doneRatio" var="ratio">
-                            <s:if test="%{#ratio == #progress}">
-                              <option selected="selected">${ratio}</option>
-                            </s:if>
-                            <s:else>
-                              <option>${ratio}</option>
-                            </s:else>
-                          </s:iterator>
-                        </select>
+                        <input id="issue_done_radio" name="editedIssue.progress" type="range"
+                               min="0" max="100" value="${progress}">&nbsp;
+                        <span id="issue_show_done_radio">${progress}</span>%
                       </p>
                     </div>
                   </div>
@@ -285,13 +289,13 @@
               <div class="split-content-left">
                 <p>
                   <label for="time_entry_hours">Spent time</label>
-                  <input id="time_entry_hours" size="6" type="text" name="editedIssue.logHours">
+                  <input id="time_entry_hours" size="6" type="number" name="loggedTime.logHours">&nbsp;Hours
                 </p>
               </div>
               <div class="split-content-right">
                 <p>
                   <label for="time_entry_activity_id">Activity</label>
-                  <select id="time_entry_activity_id" name="editedIssue.activityId">
+                  <select id="time_entry_activity_id" name="loggedTime.activityId">
                     <!-- TODO: check and design for the `activity` module -->
                     <option>--- Please select ---</option>
                   </select>
@@ -299,14 +303,14 @@
               </div>
               <p>
                 <label for="time_entry_comments">Comment</label>
-                <input id="time_entry_comments" type="text" size="60" name="editedIssue.comments">
+                <input id="time_entry_comments" type="text" size="60" name="loggedTime.comments">
               </p>
             </fieldset>
             <fieldset class="tabular">
               <legend>Notes</legend>
               <p>
                 <label for="issue_notes">Notes</label>
-                <input id="issue_notes" type="text" name="editedIssue.notes">
+                <input id="issue_notes" type="text" name="_unsolved_notes">
               </p>
             </fieldset>
           </div>

@@ -1,17 +1,21 @@
 package com.unicorn.service.impl;
 
+import com.unicorn.Utils;
+import com.unicorn.bean.EditedIssue;
 import com.unicorn.bean.SimpleIssue;
+import com.unicorn.dao.HistoryDao;
 import com.unicorn.dao.IssueDao;
+import com.unicorn.domain.History;
 import com.unicorn.domain.Issue;
-import com.unicorn.domain.Project;
+import com.unicorn.domain.IssueLog;
+import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
+import javafx.util.Pair;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Huxley on 6/30/15.
@@ -21,6 +25,9 @@ public class IssueServiceImpl implements IssueService {
 
     @Resource
     private IssueDao issueDao;
+
+    @Resource
+    private HistoryDao historyDao;
 
     private List<Issue> cacheForIssue;
     private String lastProjectIdForIssue;
@@ -60,5 +67,28 @@ public class IssueServiceImpl implements IssueService {
             return issue;
         }
         return null;
+    }
+
+    public int updateIssue(EditedIssue editedIssue, User author) {
+        Issue target = getIssue(editedIssue.getId());
+        EditedIssue origin = new EditedIssue(target);
+        List<Pair<String, Pair<Object, Object>>> log = Utils.diff(origin, editedIssue);
+
+        List<Pair<String, Object>> priorities = new ArrayList<Pair<String, Object>>();
+
+        Set<IssueLog> logs = new HashSet<IssueLog>();
+
+        History history = new History(target, logs, author, null);
+
+        for (Pair<String, Pair<Object, Object>> item: log) {
+            String property = item.getKey();
+            String oldValue = null != item.getValue().getKey() ? item.getValue().getKey().toString() : null;
+            String newValue = null != item.getValue().getValue() ? item.getValue().getValue().toString() : null;
+            logs.add(new IssueLog(history, Utils.humanize(property), oldValue, newValue));
+            priorities.add(new Pair<String, Object>(Utils.normalizeSQLProperty(property), item.getValue().getValue()));
+        }
+
+        historyDao.save(history);
+        return issueDao.update(editedIssue.getId(), priorities);
     }
 }

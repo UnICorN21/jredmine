@@ -50,6 +50,26 @@
   background-image: url(../images/fav.png);
 }
 
+div.flash {
+  padding: 4px 4px 4px 30px;
+  font-size: 1.1em;
+  border: 2px solid;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.flash.notice-succeed {
+  background: #dfffdf url(../images/true.png) 8px 5px no-repeat;
+  border-color: #9fcf9f;
+  color: #005f00;
+}
+
+.flash.notice-failed {
+  background: #ffe3e3 url(../images/exclamation.png) 8px 50% no-repeat;
+  border-color: #dd0000;
+  color: #880000;
+}
+
 header {
   position: relative;
   ul li {
@@ -132,19 +152,22 @@ header {
 
 .main {
   min-height: 600px;
+  background: #eeeeee;
+  display: block;
 
   .content {
     width: 77%;
+    height: 100%;
+    background: #fff;
     padding: 6px 10px 10px 10px;
+    border-right: 1px solid #e4e4e4;
   }
   aside {
     float: right;
     width: 22%;
     height: 100%;
-    background: #eeeeee;
     color: #555;
     padding-left: 30px;
-    border-left: 1px solid #e4e4e4;
 
     h3 {
       margin-top: 14px;
@@ -286,6 +309,20 @@ header {
     }
 
     &.single-issue {
+
+      .journal-link { float: right; }
+
+      h4 {
+        border-bottom: 1px dotted #bbb;
+        font-size: 13px;
+      }
+
+      #history ul.detail {
+        list-style-type: disc;
+        margin-left: 30px;
+        line-height: 1.2em;
+      }
+
       div.next-prev-links {
         color: #999;
       }

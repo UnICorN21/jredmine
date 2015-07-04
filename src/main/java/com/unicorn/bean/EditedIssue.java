@@ -1,53 +1,60 @@
 package com.unicorn.bean;
 
 import com.unicorn.domain.Issue;
+import freemarker.template.SimpleDate;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Huxley on 7/3/15.
  */
 public class EditedIssue {
+    private Integer id;
     private String projectId;
+    private Integer parentId;
     private Issue.Tracker tracker;
     private String subject;
     private Issue.Status status;
     private Issue.Priority priority;
     private String assigneeId;
-    private String startDate;
-    private String dueDate;
-    private String estimatedTime;
-    private String progress;
-
-    private double logHours;
-    private String activityId;
-    private String comments;
-
-    private String notes;
+    private Date startDate;
+    private Date dueDate;
+    private Double estimatedTime;
+    private Integer progress;
 
     public EditedIssue() { /* null */ }
 
-    public EditedIssue(String activityId, String assigneeId, String comments, String dueDate, String estimatedTime, double logHours, String notes, Issue.Priority priority, String progress, String projectId, String startDate, Issue.Status status, String subject, Issue.Tracker tracker) {
-        this.activityId = activityId;
+    public EditedIssue(Issue issue) {
+        this.id = issue.getId();
+        this.projectId = issue.getProject().getId();
+        this.parentId = null != issue.getParent() ? issue.getParent().getId() : null;
+        this.tracker = issue.getTracker();
+        this.subject = issue.getSubject();
+        this.status = issue.getStatus();
+        this.priority = issue.getPriority();
+        this.assigneeId = issue.getUserByAssignee().getId();
+//        this.startDate = null != issue.getStartDate() ? issue.getStartDate().toString() : "";
+//        this.dueDate = null != issue.getDueDate() ? issue.getDueDate().toString() : "";
+        this.startDate = issue.getStartDate();
+        this.dueDate = issue.getDueDate();
+        this.estimatedTime = issue.getEstimatedTime();
+        this.progress = issue.getProgress();
+    }
+
+    public EditedIssue(String assigneeId, Date dueDate, Double estimatedTime, Integer id, Issue.Priority priority, Integer progress, String projectId, Integer parentId, Date startDate, Issue.Status status, String subject, Issue.Tracker tracker) {
         this.assigneeId = assigneeId;
-        this.comments = comments;
         this.dueDate = dueDate;
         this.estimatedTime = estimatedTime;
-        this.logHours = logHours;
-        this.notes = notes;
+        this.id = id;
         this.priority = priority;
         this.progress = progress;
         this.projectId = projectId;
+        this.parentId = parentId;
         this.startDate = startDate;
         this.status = status;
         this.subject = subject;
         this.tracker = tracker;
-    }
-
-    public String getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(String activityId) {
-        this.activityId = activityId;
     }
 
     public String getAssigneeId() {
@@ -58,44 +65,29 @@ public class EditedIssue {
         this.assigneeId = assigneeId;
     }
 
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public String getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(String dueDate) throws Exception {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        this.dueDate = df.parse(dueDate);
     }
 
-    public String getEstimatedTime() {
+    public Double getEstimatedTime() {
         return estimatedTime;
     }
 
-    public void setEstimatedTime(String estimatedTime) {
+    public void setEstimatedTime(Double estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
 
-    public double getLogHours() {
-        return logHours;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLogHours(double logHours) {
-        this.logHours = logHours;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Issue.Priority getPriority() {
@@ -106,11 +98,11 @@ public class EditedIssue {
         this.priority = priority;
     }
 
-    public String getProgress() {
+    public Integer getProgress() {
         return progress;
     }
 
-    public void setProgress(String progress) {
+    public void setProgress(Integer progress) {
         this.progress = progress;
     }
 
@@ -122,12 +114,13 @@ public class EditedIssue {
         this.projectId = projectId;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setStartDate(String startDate) throws Exception {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        this.startDate = df.parse(startDate);
     }
 
     public Issue.Status getStatus() {
@@ -152,5 +145,13 @@ public class EditedIssue {
 
     public void setTracker(Issue.Tracker tracker) {
         this.tracker = tracker;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

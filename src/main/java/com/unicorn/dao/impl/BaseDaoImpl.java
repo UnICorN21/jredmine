@@ -1,6 +1,7 @@
 package com.unicorn.dao.impl;
 
 import com.unicorn.dao.BaseDao;
+import javafx.util.Pair;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -55,6 +56,28 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
     public void update(T entity) {
         getSessionFactory().getCurrentSession().saveOrUpdate(entity);
+    }
+
+    public int update(Object id, List<Pair<String, Object>> properties) {
+        if (null == properties) return 0;
+        String hql = "update " + getGenericType().getSimpleName() + " set";
+        boolean flag = false;
+
+        for (Pair<String, Object> pair: properties) {
+            if (flag) hql += ", ";
+            else { flag = !flag; hql += " "; }
+            hql += pair.getKey() + " = :" + pair.getKey();
+        }
+        hql += " where id = :id";
+        Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+
+        for (Pair<String, Object> pair: properties) {
+            query.setParameter(pair.getKey(), pair.getValue());
+        }
+        query.setParameter("id", id);
+        int result = query.executeUpdate();
+        getSessionFactory().getCurrentSession().clear();
+        return result;
     }
 
     public void delete(Class<T> entityClazz, Serializable id) {

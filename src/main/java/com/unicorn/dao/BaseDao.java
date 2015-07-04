@@ -1,5 +1,6 @@
 package com.unicorn.dao;
 
+import javafx.util.Pair;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ public interface BaseDao<T> {
     Serializable save(T entity);
 
     void update(T entity);
+
+    int update(Object id, List<Pair<String, Object>> properties);
 
     void delete(T entity);
 

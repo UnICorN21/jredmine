@@ -19,7 +19,7 @@
       <div>
         <ul>
           <li><a href="/">Home</a></li>
-          <s:if test="%{null != #session.userId}">
+          <s:if test="%{null != #session.user.id}">
             <li><a href="">My Page</a></li>
           </s:if>
           <li>
@@ -33,8 +33,8 @@
       </div>
       <div class="account">
         <ul>
-          <s:if test="%{null != #session.userId}">
-            <li><a href="#">Logged in as <s:property value="#session.username"/></a></li>
+          <s:if test="%{null != #session.user.id}">
+            <li><a href="#">Logged in as <s:property value="#session.user.username"/></a></li>
             <li><a href="">My account</a></li>
             <li><a href="">Sign out</a></li>
           </s:if>
@@ -53,7 +53,7 @@
           </label>
           <input type="text" name="qs" id="qs" class="small" size="20" accesskey="f">
         </form>
-        <s:if test="%{null != #session.userId}">
+        <s:if test="%{null != #session.user.id}">
           <select name="project_quick_jump_box" id="project_quick_jump_box" onchange="if (this.value != '') { window.location = this.value; }">
             <option value>Jump to a project...</option>
             <option value disabled>---</option>

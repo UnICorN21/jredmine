@@ -35,6 +35,8 @@
                 <value>com.unicorn.domain.User</value>
                 <value>com.unicorn.domain.Project</value>
                 <value>com.unicorn.domain.Issue</value>
+                <value>com.unicorn.domain.History</value>
+                <value>com.unicorn.domain.IssueLog</value>
             </list>
         </property>
         <property name="hibernateProperties">

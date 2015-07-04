@@ -14,7 +14,7 @@
 </head>
 
 <div class="main">
-  <s:if test="%{null != #session.userId}">
+  <s:if test="%{null != #session.user.id}">
     <%
       String redirectPath = (String)Utils.getSessionAttrAndRemoved(session, "redirectpath");
       if (!redirectPath.contains("login.do")) response.sendRedirect(redirectPath);

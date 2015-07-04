@@ -20,9 +20,8 @@ import javax.annotation.Resource;
 @ParentPackage("base")
 public class UserAction extends BaseAction<User> {
 
-    private static final String USERID = "userId";
-    private static final String USERNAME = "username";
-    private static final String REDIRECTPATH = "redirectpath";
+    public static final String USER = "user";
+    public static final String REDIRECTPATH = "redirectpath";
 
     private User user;
 
@@ -47,8 +46,7 @@ public class UserAction extends BaseAction<User> {
 
         user = userService.userLogin(user.getUsername(), user.getPassword());
         if (null != user) {
-            session.put(USERID, user.getId());
-            session.put(USERNAME, user.getUsername());
+            session.put(USER, user);
 
             return SUCCESS;
         }
@@ -60,15 +58,14 @@ public class UserAction extends BaseAction<User> {
             @Result(name = SUCCESS, location = "/index.jsp")
     })
     public String logout() {
-        session.remove(USERID);
-        session.remove(USERNAME);
+        session.remove(USER);
 
         return SUCCESS;
     }
 
     @Action(value = "ajax_userinfo", results = @Result(type = "json"))
     public String ajaxUserInfo() throws Exception {
-        JSONObject json = JSONObject.fromObject(null == session.get(USERID) ? new UserInfo() : new UserInfo(user));
+        JSONObject json = JSONObject.fromObject(null == session.get(USER) ? new UserInfo() : new UserInfo(user));
         response.setContentType("text/json; charset=utf-8");
         response.getWriter().print(json);
 

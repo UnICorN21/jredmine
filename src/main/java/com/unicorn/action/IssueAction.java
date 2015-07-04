@@ -1,8 +1,10 @@
 package com.unicorn.action;
 
 import com.unicorn.bean.EditedIssue;
+import com.unicorn.bean.LogTime;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
+import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
 import net.sf.json.JSONArray;
 import org.apache.struts2.convention.annotation.*;
@@ -18,6 +20,7 @@ import java.util.List;
 @Scope("prototype")
 @ParentPackage("base")
 public class IssueAction extends BaseAction<Issue> {
+    public static final String ISSUE_UPDATE_SUCCESS_FLAG = "issue_update_success_flag";
     private static final int ITEM_PER_PAGE = 20;
 
     @Resource
@@ -28,6 +31,7 @@ public class IssueAction extends BaseAction<Issue> {
     private Issue issue;
 
     private EditedIssue editedIssue;
+    private LogTime loggedTime;
 
     private int pageIdx;
 
@@ -78,12 +82,19 @@ public class IssueAction extends BaseAction<Issue> {
         this.editedIssue = editedIssue;
     }
 
-    @Action(value = "edit_issue", results = @Result(location = "/single_issue.jsp"))
+    public LogTime getLoggedTime() {
+        return loggedTime;
+    }
+
+    public void setLoggedTime(LogTime loggedTime) {
+        this.loggedTime = loggedTime;
+    }
+
+    @Action(value = "edit_issue", results = @Result(type = "redirect", location = "single_issue.do?id=${editedIssue.id}"))
     public String editIssue() {
-
-        issue = issueService.getIssue(issue.getId());
-
-        System.out.println("give me a breakpoint");
+        User author = (User)session.get(UserAction.USER);
+        if (1 == issueService.updateIssue(editedIssue, author))
+            session.put(ISSUE_UPDATE_SUCCESS_FLAG, null != issue);
 
         return SUCCESS;
     }

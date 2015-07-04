@@ -16,9 +16,45 @@ import org.hibernate.annotations.GenericGenerator;
 @DynamicInsert
 @Table(name = "issue", catalog = "jredmine")
 public class Issue implements java.io.Serializable {
-	public enum Tracker { Feature, Bug, Support }
-	public enum Status { New, In_Progress, Resolved, Feedback, Closed }
-	public enum Priority { Normal, Low, High, Urgent, Immediate }
+	public enum Tracker {
+		Feature("Feature"), Bug("Bug"), Support("Support");
+
+		private String desc;
+
+		private Tracker(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
+	public enum Status {
+		New("New"), In_Progress("In progress"), Resolved("Resolved"), Feedback("Feedback"), Closed("Closed");
+
+		private String desc;
+
+		private Status(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
+	public enum Priority {
+		Normal("Normal"), Low("Low"), High("High"), Urgent("Urgent"), Immediate("Immediate");
+
+		private String desc;
+
+		private Priority(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
 
 	// Fields
 
@@ -41,6 +77,7 @@ public class Issue implements java.io.Serializable {
 	private String category;
 	private Integer targetVersion;
 	private Set<Issue> issues = new HashSet<Issue>(0);
+	private Set<History> histories = new HashSet<History>(0);
 
 	private int idx;
 	private int prevIssue;
@@ -278,6 +315,15 @@ public class Issue implements java.io.Serializable {
 
 	public void setIssues(Set<Issue> issues) {
 		this.issues = issues;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "target")
+	public Set<History> getHistories() {
+		return histories;
+	}
+
+	public void setHistories(Set<History> histories) {
+		this.histories = histories;
 	}
 
 	@Transient

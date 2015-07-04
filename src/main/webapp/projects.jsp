@@ -37,7 +37,7 @@
         <s:iterator value="projectList" var="project">
           <li class="root">
             <div class="root">
-              <s:if test="%{#project.userByManager.id == #session.userId}">
+              <s:if test="%{#project.userByManager.id == #session.user.id}">
                 <s:a action="overview" namespace="/project" class="project my-project">
                   <s:param name="id" value="#project.id"/>
                   ${project.name}
@@ -55,7 +55,7 @@
                 <s:iterator value="#project.projects" var="project">
                   <li class="child">
                     <div class="child">
-                      <s:if test="%{#project.userByManager.id == #session.userId}">
+                      <s:if test="%{#project.userByManager.id == #session.user.id}">
                         <s:a action="overview" namespace="/project" class="project my-project">
                           <s:param name="id" value="#project.id"/>
                           ${project.name}
@@ -76,7 +76,7 @@
         </s:iterator>
       </ul>
     </div>
-    <s:if test="%{null != #session.userId}">
+    <s:if test="%{null != #session.user.id}">
       <p style="text-align: right;">
         <span class="my-project">My Projects</span>
       </p>
