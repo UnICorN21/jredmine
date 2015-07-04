@@ -1,10 +1,11 @@
 package com.unicorn.service;
 
-import com.unicorn.bean.EditedIssue;
+import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
 import com.unicorn.domain.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -17,9 +18,18 @@ public interface IssueService {
 
     /**
      * Update issue.
-     * Update with the given issue and generate log/history(TODO).
-     * @param editedIssue: the issue bean with the updated info.
+     * Update with the given issue and generate log/history.
+     * @param formIssue: the issue bean with the updated info.
      * @return updated issue
      */
-    int updateIssue(EditedIssue editedIssue, User author);
+    int updateIssue(FormIssue formIssue, User author, String notes);
+
+    /**
+     * Create new issue
+     * Create with the given `formIssue` and generate activity(?, TODO)
+     * @param formIssue
+     * @param author
+     * @return
+     */
+    Issue createIssue(FormIssue formIssue, User author);
 }

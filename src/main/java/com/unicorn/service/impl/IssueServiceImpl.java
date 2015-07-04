@@ -1,7 +1,7 @@
 package com.unicorn.service.impl;
 
 import com.unicorn.Utils;
-import com.unicorn.bean.EditedIssue;
+import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.dao.HistoryDao;
 import com.unicorn.dao.IssueDao;
@@ -11,7 +11,6 @@ import com.unicorn.domain.IssueLog;
 import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
 import javafx.util.Pair;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -69,26 +68,34 @@ public class IssueServiceImpl implements IssueService {
         return null;
     }
 
-    public int updateIssue(EditedIssue editedIssue, User author) {
-        Issue target = getIssue(editedIssue.getId());
-        EditedIssue origin = new EditedIssue(target);
-        List<Pair<String, Pair<Object, Object>>> log = Utils.diff(origin, editedIssue);
+    public int updateIssue(FormIssue formIssue, User author, String notes) {
+        Issue target = getIssue(formIssue.getId());
+        FormIssue origin = new FormIssue(target);
+        List<Pair<String, Pair<Object, Object>>> log = Utils.diff(origin, formIssue);
 
         List<Pair<String, Object>> priorities = new ArrayList<Pair<String, Object>>();
 
         Set<IssueLog> logs = new HashSet<IssueLog>();
 
-        History history = new History(target, logs, author, null);
+        History history = new History(target, logs, author, notes);
 
         for (Pair<String, Pair<Object, Object>> item: log) {
             String property = item.getKey();
-            String oldValue = null != item.getValue().getKey() ? item.getValue().getKey().toString() : null;
-            String newValue = null != item.getValue().getValue() ? item.getValue().getValue().toString() : null;
+            String oldValue = null != item.getValue().getKey() ? Utils.humanize(item.getValue().getKey().toString() ) : null;
+            String newValue = null != item.getValue().getValue() ? Utils.humanize(item.getValue().getValue().toString()) : null;
             logs.add(new IssueLog(history, Utils.humanize(property), oldValue, newValue));
             priorities.add(new Pair<String, Object>(Utils.normalizeSQLProperty(property), item.getValue().getValue()));
         }
 
         historyDao.save(history);
-        return issueDao.update(editedIssue.getId(), priorities);
+        return issueDao.update(formIssue.getId(), priorities);
+    }
+
+
+    public Issue createIssue(FormIssue formIssue, User author) {
+        Issue issue = new Issue(formIssue, author);
+        issueDao.save(issue);
+
+        return issue;
     }
 }

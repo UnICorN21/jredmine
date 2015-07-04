@@ -19,7 +19,7 @@ public class Utils {
 
     public static String time2ago(long time) {
         long passedTime = (new Date()).getTime() - time;
-        if (passedTime < 2 * ONE_MIN) return "1 minute";
+        if (passedTime < 2 * ONE_MIN) return " about 1 minute";
         else if (passedTime < 2 * ONE_HOUR) return String.format("%d minutes", passedTime / ONE_MIN);
         else if (passedTime <  2 * ONE_DAY) return String.format("%d hours", passedTime / ONE_HOUR);
         else return String.format("%d days", passedTime / ONE_DAY);
@@ -96,15 +96,21 @@ public class Utils {
 
     /**
      * Make the given name human readable.
-     * e.g. `dueDate` => `Due date`
+     * e.g. `dueDate_A` => `Due date A`
      * @param name
      * @return A human readable name.
      */
     public static String humanize(String name) {
+        if (0 == name.length()) return name;
         StringBuffer buffer = new StringBuffer(name);
-        for (int i = 1; i < buffer.length(); ++i) {
-            if (Character.isUpperCase(buffer.charAt(i)))
-                buffer.replace(i, i + 1, " " + Character.toLowerCase(buffer.charAt(i++)));
+        for (int i = 1; i < buffer.length() - 1; ++i) {
+            if (Character.isUpperCase(buffer.charAt(i + 1))) {
+                if (Character.isLowerCase(buffer.charAt(i))) {
+                    buffer.replace(i + 1, i + 2, " " + Character.toLowerCase(buffer.charAt(i++ + 1)));
+                } else if ('_' == buffer.charAt(i)) {
+                    buffer.replace(i, i + 2, " " + Character.toLowerCase(buffer.charAt(i++ + 1)));
+                }
+            }
         }
         buffer.replace(0, 1, String.valueOf(Character.toUpperCase(buffer.charAt(0))));
         return buffer.toString();

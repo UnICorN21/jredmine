@@ -60,7 +60,10 @@
           </select>
         </s:if>
       </div>
-      <h1>JRedmine</h1>
+      <h1>
+        <s:if test="%{null != #session.currentProject}">${session.currentProject.name}</s:if>
+        <s:else>JRedmine</s:else>
+      </h1>
       <s:if test="!#hideMainMenu">
         <div class="main-menu">
           <ul>
@@ -72,7 +75,7 @@
                 <li>
               </s:else>
                   <s:a action="%{item}" namespace="/project" includeParams="none">
-                    <s:param name="id" value="#session.projectId"/>
+                    <s:param name="id" value="#session.currentProject.id"/>
                     ${item}
                   </s:a>
                 </li>

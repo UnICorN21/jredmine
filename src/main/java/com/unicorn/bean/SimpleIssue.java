@@ -15,9 +15,9 @@ public class SimpleIssue {
     private int id;
     private String assignee;
     private String subject;
-    private Priority priority;
-    private Status status;
-    private Tracker tracker;
+    private String priority;
+    private String status;
+    private String tracker;
     private String updateTime;
 
 
@@ -25,9 +25,9 @@ public class SimpleIssue {
         this.id = issue.getId();
         this.assignee = issue.getUserByAssignee().getUsername();
         this.subject = issue.getSubject();
-        this.priority = issue.getPriority();
-        this.status = issue.getStatus();
-        this.tracker = issue.getTracker();
+        this.priority = issue.getPriority().getDesc();
+        this.status = issue.getStatus().getDesc();
+        this.tracker = issue.getTracker().getDesc();
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.updateTime = df.format(issue.getUpdateTime());
@@ -49,19 +49,19 @@ public class SimpleIssue {
         this.id = id;
     }
 
-    public Priority getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -73,11 +73,11 @@ public class SimpleIssue {
         this.subject = subject;
     }
 
-    public Tracker getTracker() {
+    public String getTracker() {
         return tracker;
     }
 
-    public void setTracker(Tracker tracker) {
+    public void setTracker(String tracker) {
         this.tracker = tracker;
     }
 

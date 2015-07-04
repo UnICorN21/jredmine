@@ -12,6 +12,26 @@ var util = (function() {
         showAndScrollTo: function(id) {
             $('#' + id).show();
             $('html, body').animate({scrollTop: $('#' + id).offset().top}, 100);
+        },
+        checkForm: function(id) {
+            $('#' + id).bind('change', function() {
+                $('#' + id + ' input[type=submit]').prop('disabled', false);
+            });
+        },
+        dismiss: function(selector, animateTime, delay) {
+            animateTime = animateTime | 500;
+            delay = delay | 4500;
+
+            var element = document.querySelector(selector);
+            if (undefined != element) {
+                setTimeout(function() {
+                    $(element).animate({height: 0}, animateTime, 'linear', function() {
+                        element.style.display = "none";
+                    })
+                }, delay);
+            } else {
+                console.error('util: Couldn\'t select the given element!')
+            }
         }
     }
 })();

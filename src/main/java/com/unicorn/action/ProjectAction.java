@@ -20,6 +20,7 @@ import java.util.List;
 @ParentPackage("base")
 public class ProjectAction extends BaseAction<Project> {
 
+    public static final String CURRENT_PROJECT = "currentProject";
     private static final int MAX_NUM_OF_LATEST_PROJECTS = 8;
 
     @Resource
@@ -93,7 +94,7 @@ public class ProjectAction extends BaseAction<Project> {
     public String execute() {
         if (null != project.getId()) {
             project = projectService.getProject(project.getId());
-            session.put("projectId", project.getId());
+            session.put(CURRENT_PROJECT, project);
         }
         return SUCCESS;
     }

@@ -1,6 +1,6 @@
 package com.unicorn.action;
 
-import com.unicorn.bean.EditedIssue;
+import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.LogTime;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
@@ -20,7 +20,13 @@ import java.util.List;
 @Scope("prototype")
 @ParentPackage("base")
 public class IssueAction extends BaseAction<Issue> {
+    private static final String REDIRECT = "REDIRECT";
+    private static final String SUBMIT_TYPE_CREATE = "Create";
+    private static final String SUBMIT_TYPE_CREATE_AND_CONTINUE = "Create and continue";
+
+    public static final String ISSUE_CREATE_SUCCESS_FLAG = "issue_create_success_flag";
     public static final String ISSUE_UPDATE_SUCCESS_FLAG = "issue_update_success_flag";
+
     private static final int ITEM_PER_PAGE = 20;
 
     @Resource
@@ -30,8 +36,11 @@ public class IssueAction extends BaseAction<Issue> {
 
     private Issue issue;
 
-    private EditedIssue editedIssue;
+    private FormIssue formIssue;
     private LogTime loggedTime;
+    private String notes;
+
+    private String submitType;
 
     private int pageIdx;
 
@@ -74,12 +83,12 @@ public class IssueAction extends BaseAction<Issue> {
         return SUCCESS;
     }
 
-    public EditedIssue getEditedIssue() {
-        return editedIssue;
+    public FormIssue getFormIssue() {
+        return formIssue;
     }
 
-    public void setEditedIssue(EditedIssue editedIssue) {
-        this.editedIssue = editedIssue;
+    public void setFormIssue(FormIssue formIssue) {
+        this.formIssue = formIssue;
     }
 
     public LogTime getLoggedTime() {
@@ -90,12 +99,46 @@ public class IssueAction extends BaseAction<Issue> {
         this.loggedTime = loggedTime;
     }
 
-    @Action(value = "edit_issue", results = @Result(type = "redirect", location = "single_issue.do?id=${editedIssue.id}"))
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = "".equals(notes) ? null : notes;
+    }
+
+    public String getSubmitType() {
+        return submitType;
+    }
+
+    public void setSubmitType(String submitType) {
+        this.submitType = submitType;
+    }
+
+    @Action(value = "edit_issue", results = @Result(type = "redirect", location = "single_issue.do?id=${formIssue.id}"))
     public String editIssue() {
         User author = (User)session.get(UserAction.USER);
-        if (1 == issueService.updateIssue(editedIssue, author))
-            session.put(ISSUE_UPDATE_SUCCESS_FLAG, null != issue);
+        if (1 == issueService.updateIssue(formIssue, author, notes))
+            session.put(ISSUE_UPDATE_SUCCESS_FLAG, true);
 
         return SUCCESS;
+    }
+
+    @Action(value = "new_issue", results = {
+            @Result(name = REDIRECT, type = "redirect", location = "single_issue.do?id=${id}"),
+            @Result(name = SUCCESS, location = "/project_new.jsp")
+    })
+    public String newIssue() {
+        User author = (User)session.get(UserAction.USER);
+        try {
+            issue = issueService.createIssue(formIssue, author);
+            session.put(ISSUE_CREATE_SUCCESS_FLAG, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.put(ISSUE_CREATE_SUCCESS_FLAG, false);
+        }
+
+        if (SUBMIT_TYPE_CREATE.equals(submitType)) return REDIRECT;
+        else return SUCCESS;
     }
 }

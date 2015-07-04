@@ -190,9 +190,8 @@
       <div id="update" style="display: none">
         <h3>Edit</h3>
         <form id="issue-form" class="edit_issue" enctype="multipart/form-data" action="/edit_issue.do" method="post">
-          <input type="hidden" name="editedIssue.id" value="${id}"/>
+          <input type="hidden" name="formIssue.id" value="${id}"/>
           <div class="box">
-            <s:set name="doneRatio" value="{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}"/>
             <fieldset class="tabular">
               <legend>Change properties</legend>
               <div class="all_attributes">
@@ -201,7 +200,7 @@
                     Project
                     <span class="required">*</span>
                   </label>
-                  <select id="issue_project_id" name="editedIssue.projectId" required>
+                  <select id="issue_project_id" name="formIssue.projectId" required>
                     <option value="${project.id}">${project.name}</option>
                   </select>
                 </p>
@@ -210,7 +209,7 @@
                     Tracker
                     <span class="required">*</span>
                   </label>
-                  <s:select id="issue_tracker_id" name="editedIssue.tracker" value="tracker"
+                  <s:select id="issue_tracker_id" name="formIssue.tracker" value="tracker"
                           list="@com.unicorn.domain.Issue$Tracker@values()" requiredLabel="true"
                           listKey="name()" listValue="desc"/>
                 </p>
@@ -220,12 +219,14 @@
                     <span class="required">*</span>
                   </label>
                   <input type="text" size="80" maxlength="255" value="${subject}"
-                         required name="editedIssue.subject" id="issue_subject">
+                         required name="formIssue.subject" id="issue_subject">
                 </p>
                 <p>
                   <label for="issue_description">Description</label>
                   <a href="#" class="icon icon-edit"></a>
-                  <span id="issue_description" style="display: none"></span>
+                  <span style="display: none">
+                    <input id="issue_description" name="formIssue.description" type="text" size="80">
+                  </span>
                 </p>
                 <div id="attributes" class="attributes">
                   <div class="split-content">
@@ -235,7 +236,7 @@
                           Status
                           <span class="required">*</span>
                         </label>
-                        <s:select id="issue_status_id" name="editedIssue.status" value="status"
+                        <s:select id="issue_status_id" name="formIssue.status" value="status"
                                 list="@com.unicorn.domain.Issue$Status@values()" requiredLabel="true"
                                 listKey="name()" listValue="desc"/>
                       </p>
@@ -244,38 +245,38 @@
                           Priority
                           <span class="required">*</span>
                         </label>
-                        <s:select id="issue_priority_id" name="editedIssue.priority" value="priority"
+                        <s:select id="issue_priority_id" name="formIssue.priority" value="priority"
                                   list="@com.unicorn.domain.Issue$Priority@values()" requiredLabel="true"
                                   listKey="name()" listValue="desc"/>
                       </p>
                       <p>
-                        <%--<label for="issue_assignee_id">Assignee</label>--%>
-                        <%--<s:select id="issue_assignee_id" name="editedIssue.assigneeId" value="#session.user.id"--%>
-                                <%--list="#developers" listKey="id" listValue="username"/>--%>
+                        <label for="issue_assignee_id">Assignee</label>
+                        <s:select id="issue_assignee_id" name="formIssue.assigneeId" value="#session.user.id"
+                                list="project.developers" listKey="id" listValue="username"/>
                       </p>
                     </div>
                     <div class="split-content-right">
                       <p>
                         <label for="issue_parent_issue_id">Parent task</label>
                         <input id="issue_parent_issue_id" type="text" size="10"
-                               name="editedIssue.parentId" autocomplete="off" value="${parent.id}">
+                               name="formIssue.parentId" autocomplete="off" value="${parent.id}">
                       </p>
                       <p>
                         <label for="issue_start_date">Start date</label>
-                        <input id="issue_start_date" size="10" type="date" name="editedIssue.startDate" value="${startDate}">
+                        <input id="issue_start_date" size="10" type="date" name="formIssue.startDate" value="${startDate}">
                       </p>
                       <p>
                         <label for="issue_due_date">Due date</label>
-                        <input id="issue_due_date" size="10" type="date" name="editedIssue.dueDate" value="${dueDate}">
+                        <input id="issue_due_date" size="10" type="date" name="formIssue.dueDate" value="${dueDate}">
                       </p>
                       <p>
                         <label for="issue_estimated_time">Estimated time</label>
                         <input id="issue_estimated_time" size="3" type="number"
-                               name="editedIssue.estimatedTime" value="${estimatedTime}">&nbsp;Hours
+                               name="formIssue.estimatedTime" value="${estimatedTime}">&nbsp;Hours
                       </p>
                       <p>
                         <label for="issue_done_radio">%&nbsp;Done</label>
-                        <input id="issue_done_radio" name="editedIssue.progress" type="range"
+                        <input id="issue_done_radio" name="formIssue.progress" type="range"
                                min="0" max="100" value="${progress}">&nbsp;
                         <span id="issue_show_done_radio">${progress}</span>%
                       </p>
@@ -310,7 +311,7 @@
               <legend>Notes</legend>
               <p>
                 <label for="issue_notes">Notes</label>
-                <input id="issue_notes" type="text" name="_unsolved_notes">
+                <input id="issue_notes" type="text" name="notes">
               </p>
             </fieldset>
           </div>

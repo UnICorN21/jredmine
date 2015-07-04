@@ -10,7 +10,7 @@
 </head>
 
 <!-- Content starts here. -->
-<div class="main" style="padding: 6px 10px 10px 10px;">
+<div class="main" style="padding: 6px 10px 10px 10px; background: #fff;">
     <h2>Home</h2>
     <div class="left">
 

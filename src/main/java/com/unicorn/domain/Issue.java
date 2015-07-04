@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
+import com.unicorn.bean.FormIssue;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -86,7 +87,29 @@ public class Issue implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public Issue() {
+	public Issue() { /* null */ }
+
+	public Issue(FormIssue formIssue, User author) {
+		this.userByAssigner = author;
+		this.userByAssignee = new User();
+		this.userByAssignee.setId(formIssue.getAssigneeId());
+		this.project = new Project();
+		this.project.setId(formIssue.getProjectId());
+		this.subject = formIssue.getSubject();
+		this.priority = formIssue.getPriority();
+		this.status = formIssue.getStatus();
+		this.tracker = formIssue.getTracker();
+		this.createTime = new Timestamp((new Date()).getTime());
+		this.updateTime = this.createTime;
+		this.startDate = formIssue.getStartDate();
+		this.dueDate = formIssue.getDueDate();
+		this.progress = formIssue.getProgress();
+		if (null != formIssue.getParentId()) {
+			this.parent = new Issue();
+			this.parent.setId(formIssue.getParentId());
+		}
+		this.description = formIssue.getDescription();
+		this.estimatedTime = formIssue.getEstimatedTime();
 	}
 
 	/** minimal constructor */

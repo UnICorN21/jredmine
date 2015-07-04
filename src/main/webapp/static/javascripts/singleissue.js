@@ -12,18 +12,8 @@ var singleIssue = (function() {
         $('#issue_show_done_radio').html(value);
     });
 
-    $('#issue-form').bind('change', function() {
-        $('#issue-form input[type=submit]').prop('disabled', false);
-    });
+    util.checkForm('issue-form');
 
-    var notice = document.querySelector('div.flash');
-    console.log(notice);
-    if (undefined != notice) {
-        setTimeout(function() {
-            $(notice).animate({height: 0}, 500, 'linear', function() {
-                notice.style.display = "none";
-            })
-        }, 4500);
-    }
+    util.dismiss('div.flash');
 
 })();

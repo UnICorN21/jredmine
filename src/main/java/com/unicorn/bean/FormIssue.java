@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by Huxley on 7/3/15.
  */
-public class EditedIssue {
+public class FormIssue {
     private Integer id;
     private String projectId;
     private Integer parentId;
@@ -22,10 +22,11 @@ public class EditedIssue {
     private Date dueDate;
     private Double estimatedTime;
     private Integer progress;
+    private String description;
 
-    public EditedIssue() { /* null */ }
+    public FormIssue() { /* null */ }
 
-    public EditedIssue(Issue issue) {
+    public FormIssue(Issue issue) {
         this.id = issue.getId();
         this.projectId = issue.getProject().getId();
         this.parentId = null != issue.getParent() ? issue.getParent().getId() : null;
@@ -40,9 +41,10 @@ public class EditedIssue {
         this.dueDate = issue.getDueDate();
         this.estimatedTime = issue.getEstimatedTime();
         this.progress = issue.getProgress();
+        this.description = issue.getDescription();
     }
 
-    public EditedIssue(String assigneeId, Date dueDate, Double estimatedTime, Integer id, Issue.Priority priority, Integer progress, String projectId, Integer parentId, Date startDate, Issue.Status status, String subject, Issue.Tracker tracker) {
+    public FormIssue(String assigneeId, Date dueDate, Double estimatedTime, Integer id, Issue.Priority priority, Integer progress, String projectId, Integer parentId, Date startDate, Issue.Status status, String subject, Issue.Tracker tracker, String description) {
         this.assigneeId = assigneeId;
         this.dueDate = dueDate;
         this.estimatedTime = estimatedTime;
@@ -55,6 +57,7 @@ public class EditedIssue {
         this.status = status;
         this.subject = subject;
         this.tracker = tracker;
+        this.description = description;
     }
 
     public String getAssigneeId() {
@@ -153,5 +156,13 @@ public class EditedIssue {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

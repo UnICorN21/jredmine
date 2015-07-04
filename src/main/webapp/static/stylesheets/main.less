@@ -157,7 +157,7 @@ header {
 
   .content {
     width: 77%;
-    height: 100%;
+    min-height: 100%;
     background: #fff;
     padding: 6px 10px 10px 10px;
     border-right: 1px solid #e4e4e4;
@@ -165,7 +165,6 @@ header {
   aside {
     float: right;
     width: 22%;
-    height: 100%;
     color: #555;
     padding-left: 30px;
 
@@ -179,6 +178,70 @@ header {
   section {
     display: block;
     overflow: hidden;
+
+
+    .tabular {
+      border: 1px solid #e4e4e4;
+      margin: 0;
+
+      label {
+        font-weight: bold;
+        float: left;
+        text-align: right;
+        margin-left: -180px;
+        width: 175px;
+      }
+
+      span.required { color: #bb0000; }
+
+      p {
+        margin: 0;
+        padding: 3px 0 3px 180px;
+        min-height: 1.8em;
+        clear: left;
+      }
+
+      input#time_entry_comments { width: 90%; }
+    }
+
+    .box {
+      padding: 6px;
+      margin-bottom: 10px;
+      background: #f6f6f6;
+      color: #505050;
+      border: 1px solid #e4e4e4;
+      -ms-word-wrap: break-word;
+      word-wrap: break-word;
+      line-height: 1.5em;
+
+      &.project h3 { background: url(../images/projects.png) no-repeat 0 50%; }
+      &.issues h3 { background: url(../images/ticket.png) no-repeat 0 50%; }
+      &.member h3 { background: url(../images/group.png) no-repeat 0 50%; }
+
+      h3 {
+        font-size: 16px;
+        padding-left: 20px;
+      }
+
+      ul {
+        list-style: disc;
+        padding-left: 30px;
+      }
+    }
+
+    .split-content {
+      overflow: auto;
+    }
+
+    .split-content-left {
+      float: left;
+      width: 49%;
+    }
+
+    .split-content-right {
+      float: right;
+      width: 49%;
+    }
 
     p.other-formats {
       text-align: right;
@@ -310,6 +373,13 @@ header {
 
     &.single-issue {
 
+      h2 {
+        color: #555;
+        font-size: 20px;
+        padding: 2px 10px 1px 0;
+        margin: 0 0 10px 0;
+      }
+
       .journal-link { float: right; }
 
       h4 {
@@ -425,80 +495,12 @@ header {
     }
   }
 
-  .box {
-    padding: 6px;
-    margin-bottom: 10px;
-    background: #f6f6f6;
-    color: #505050;
-    border: 1px solid #e4e4e4;
-    -ms-word-wrap: break-word;
-    word-wrap: break-word;
-    line-height: 1.5em;
 
-    &.project h3 { background: url(../images/projects.png) no-repeat 0 50%; }
-    &.issues h3 { background: url(../images/ticket.png) no-repeat 0 50%; }
-    &.member h3 { background: url(../images/group.png) no-repeat 0 50%; }
-
-    h3 {
-      font-size: 16px;
-      padding-left: 20px;
-    }
-
-    ul {
-      list-style: disc;
-      padding-left: 30px;
-    }
-  }
-
-  .split-content {
-    overflow: auto;
-  }
-
-  .split-content-left {
-    float: left;
-    width: 49%;
-  }
-
-  .split-content-right {
-    float: right;
-    width: 49%;
-  }
 
   legend { color: #484848; }
 
   // For temp placeholder
   input#issue_notes { width: 90%; }
-
-  fieldset.tabular {
-    border: 1px solid #e4e4e4;
-    margin: 0;
-
-    label {
-      font-weight: bold;
-      float: left;
-      text-align: right;
-      margin-left: -180px;
-      width: 175px;
-    }
-
-    span.required { color: #bb0000; }
-
-    p {
-      margin: 0;
-      padding: 3px 0 3px 180px;
-      min-height: 1.8em;
-      clear: left;
-    }
-
-    input#time_entry_comments { width: 90%; }
-  }
-
-  h2 {
-    color: #555;
-    font-size: 20px;
-    padding: 2px 10px 1px 0;
-    margin: 0 0 10px 0;
-  }
 
   .left {
     display: block;
