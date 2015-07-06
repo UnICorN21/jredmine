@@ -15,7 +15,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Huxley on 6/29/15.
@@ -52,6 +51,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
     public Serializable save(T entity) {
         Serializable result = getSessionFactory().getCurrentSession().save(entity);
+        getSessionFactory().getCurrentSession().flush();
         getSessionFactory().getCurrentSession().clear();
         return result;
     }

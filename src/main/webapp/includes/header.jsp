@@ -1,4 +1,3 @@
-<%@ page import="com.opensymphony.xwork2.util.ValueStack" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huxley
@@ -40,7 +39,7 @@
           </s:if>
           <s:else>
             <li><s:a action="login" namespace="/">Sign in</s:a></li>
-            <li><s:a action="signup" namespace="/">Register</s:a></li>
+            <li><a href="/register.jsp">Register</a></li>
           </s:else>
         </ul>
       </div>

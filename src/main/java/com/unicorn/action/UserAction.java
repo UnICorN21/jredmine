@@ -23,6 +23,8 @@ public class UserAction extends BaseAction<User> {
     public static final String USER = "user";
     public static final String REDIRECTPATH = "redirectpath";
 
+    public static final String LOGIN_FAILED_FLAG = "login_failed_flag";
+
     private User user;
 
     @Resource
@@ -38,8 +40,9 @@ public class UserAction extends BaseAction<User> {
             @Result(name = INPUT, location = "/login.jsp")
     })
     public String login() {
-
+        boolean flag = true;
         if (null == session.get(REDIRECTPATH)) {
+            flag = false;
             String redirectPath = request.getHeader("referer");
             session.put(REDIRECTPATH, redirectPath);
         }
@@ -51,6 +54,8 @@ public class UserAction extends BaseAction<User> {
             return SUCCESS;
         }
 
+        if (flag) session.put(LOGIN_FAILED_FLAG, true);
+
         return INPUT;
     }
 
@@ -61,6 +66,16 @@ public class UserAction extends BaseAction<User> {
         session.remove(USER);
 
         return SUCCESS;
+    }
+
+    @Action(value = "register", results = {
+            @Result(name = SUCCESS, location = "/index.jsp"),
+            @Result(name = INPUT,  location = "/register.jsp")
+    })
+    public String register() {
+        int result = userService.register(user);
+        if (1 == result) return SUCCESS;
+        else return INPUT;
     }
 
     @Action(value = "ajax_userinfo", results = @Result(type = "json"))

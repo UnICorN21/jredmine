@@ -2,8 +2,8 @@ package com.unicorn.service.impl;
 
 import com.unicorn.dao.UserDao;
 import com.unicorn.domain.User;
-import org.springframework.stereotype.Service;
 import com.unicorn.service.UserService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -29,7 +29,17 @@ public class UserServiceImpl implements UserService {
         properites.put(PASSWORD, password);
 
         List<User> users = userDao.findByProperties(properites, null);
-        if (null != users) return users.get(0);
+        if (0 != users.size()) return users.get(0);
         else return null;
+    }
+
+    public int register(User user) {
+        try {
+            userDao.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
     }
 }

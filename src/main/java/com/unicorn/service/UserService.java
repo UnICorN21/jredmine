@@ -7,4 +7,6 @@ import com.unicorn.domain.User;
  */
 public interface UserService {
     User userLogin(String username, String password);
+
+    int register(User user);
 }

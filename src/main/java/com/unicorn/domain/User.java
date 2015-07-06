@@ -1,13 +1,13 @@
 package com.unicorn.domain;
 
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.*;
-
-import org.apache.struts2.json.annotations.JSON;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User entity. @author MyEclipse Persistence Tools
@@ -22,10 +22,11 @@ public class User implements java.io.Serializable {
 	private String id;
 	private String username;
 	private String password;
+	private Role role = Role.NORMAL;
 	private String email;
-	private Integer emailHidden;
-	private Timestamp registerTime;
-	private Timestamp lastConnectionTime;
+	private Integer emailHidden = 1;
+	private Timestamp registerTime = new Timestamp((new Date()).getTime());
+	private Timestamp lastConnectionTime = new Timestamp((new Date()).getTime());
 	private Set<Issue> issuesForAssignee = new HashSet<Issue>(0);
 	private Set<Issue> issuesForAssigner = new HashSet<Issue>(0);
 	private Set<Project> projectsByManager = new HashSet<Project>(0);
@@ -94,6 +95,16 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "role", nullable = false)
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Column(name = "email", nullable = false, length = 100)
 	public String getEmail() {
 		return this.email;
@@ -103,7 +114,7 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "email_hidden")
+	@Column(name = "email_hidden", nullable = false)
 	public Integer getEmailHidden() {
 		return this.emailHidden;
 	}

@@ -17,6 +17,7 @@
   <link rel="stylesheet/less" type="text/css" href="/static/stylesheets/main.less"/>
   <script src="/static/javascripts/less.min.js"></script>
   <script src="/static/javascripts/jquery-1.11.3.min.js"></script>
+  <script src="/static/javascripts/jquery.validate.min.js"></script>
   <title>JRedmine</title>
 </head>
 <body>

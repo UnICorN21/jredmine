@@ -161,24 +161,13 @@ header {
     background: #fff;
     padding: 6px 10px 10px 10px;
     border-right: 1px solid #e4e4e4;
-  }
-  aside {
-    float: right;
-    width: 22%;
-    color: #555;
-    padding-left: 30px;
 
-    h3 {
-      margin-top: 14px;
-      font-size: 14px;
-      color: #666;
+    em.info {
+      font-style: normal;
+      font-size: 90%;
+      color: #888;
+      display: block;
     }
-  }
-
-  section {
-    display: block;
-    overflow: hidden;
-
 
     .tabular {
       border: 1px solid #e4e4e4;
@@ -190,6 +179,13 @@ header {
         text-align: right;
         margin-left: -180px;
         width: 175px;
+      }
+
+      label[class=error] {
+        float: none;
+        margin-left: 5px;
+        font-weight: normal;
+        color: coral;
       }
 
       span.required { color: #bb0000; }
@@ -228,6 +224,23 @@ header {
         padding-left: 30px;
       }
     }
+  }
+  aside {
+    float: right;
+    width: 22%;
+    color: #555;
+    padding-left: 30px;
+
+    h3 {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
+  section {
+    display: block;
+    overflow: hidden;
 
     .split-content {
       overflow: auto;

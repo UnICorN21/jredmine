@@ -30,10 +30,10 @@
    </s:if>
    <s:else>
      <form action="/login.do" method="post">
-       <div class="login-form">
+       <div class="login-form" id="login-form">
          <p><span>Login:</span><input name="username" type="text"></p>
          <p><span>Password:</span><input name="password" type="password"></p>
-         <button type="submit">Login>></button></p>
+         <button type="submit">Login>></button>
        </div>
      </form>
    </s:else>
