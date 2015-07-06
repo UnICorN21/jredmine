@@ -183,9 +183,9 @@
               </li>
             </s:iterator>
           </ul>
-          <s:if test="%{null != history.note}">
+          <s:if test="%{null != #history.notes}">
             <div class="wiki" id="journal-${history.id}-node">
-              <p>${history.note}</p>
+              <p>${history.notes}</p>
             </div>
           </s:if>
         </div>

@@ -19,7 +19,7 @@ public class History implements Serializable {
     private Issue target;
     private User author;
     private Timestamp logTime;
-    private String note;
+    private String notes;
 
     private Set<IssueLog> logs;
 
@@ -29,7 +29,7 @@ public class History implements Serializable {
         this.target = target;
         this.logs = logs;
         this.author = author;
-        this.note = note;
+        this.notes = note;
         this.logTime = new Timestamp((new Date()).getTime());
     }
 
@@ -71,13 +71,13 @@ public class History implements Serializable {
         this.logTime = logTime;
     }
 
-    @Column(name = "note", nullable = true, length = 255)
-    public String getNote() {
-        return note;
+    @Column(name = "notes", nullable = true, length = 255)
+    public String getNotes() {
+        return notes;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNotes(String note) {
+        this.notes = note;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
