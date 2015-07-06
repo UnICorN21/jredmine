@@ -5,10 +5,8 @@ import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.dao.HistoryDao;
 import com.unicorn.dao.IssueDao;
-import com.unicorn.domain.History;
-import com.unicorn.domain.Issue;
-import com.unicorn.domain.IssueLog;
-import com.unicorn.domain.User;
+import com.unicorn.dao.LogTimeDao;
+import com.unicorn.domain.*;
 import com.unicorn.service.IssueService;
 import javafx.util.Pair;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,9 @@ public class IssueServiceImpl implements IssueService {
 
     @Resource
     private HistoryDao historyDao;
+
+    @Resource
+    private LogTimeDao logTimeDao;
 
     private List<Issue> cacheForIssue;
     private String lastProjectIdForIssue;
@@ -88,6 +89,8 @@ public class IssueServiceImpl implements IssueService {
             priorities.add(new Pair<String, Object>(Utils.normalizeSQLProperty(property), item.getValue().getValue()));
         }
 
+        if (0 == priorities.size()) return 0; // Prevent a void update.
+
         historyDao.save(history);
         return issueDao.update(formIssue.getId(), priorities);
     }
@@ -98,5 +101,9 @@ public class IssueServiceImpl implements IssueService {
         issueDao.save(issue);
 
         return issue;
+    }
+
+    public void logTime(LogTime logTime) {
+        logTimeDao.save(logTime);
     }
 }

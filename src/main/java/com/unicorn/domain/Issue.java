@@ -1,14 +1,13 @@
 package com.unicorn.domain;
 
+import com.unicorn.bean.FormIssue;
+import org.hibernate.annotations.DynamicInsert;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-
-import com.unicorn.bean.FormIssue;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Issue entity. @author MyEclipse Persistence Tools
@@ -79,6 +78,9 @@ public class Issue implements java.io.Serializable {
 	private Integer targetVersion;
 	private Set<Issue> issues = new HashSet<Issue>(0);
 	private Set<History> histories = new HashSet<History>(0);
+	private Set<LogTime> logTimes = new HashSet<LogTime>(0);
+
+	private double spentTime;
 
 	private int idx;
 	private int prevIssue;
@@ -136,7 +138,7 @@ public class Issue implements java.io.Serializable {
 			Priority priority, Status status, Tracker tracker,
 			Timestamp createTime, Timestamp updateTime, Double estimatedTime, Date startDate,
 			Date dueDate, Integer progress, String category,
-			Integer targetVersion, Set<Issue> issues) {
+			Integer targetVersion, Set<Issue> issues, Set<LogTime> logTimes) {
 		this.userByAssigner = userByAssigner;
 		this.parent = parent;
 		this.project = project;
@@ -155,6 +157,7 @@ public class Issue implements java.io.Serializable {
 		this.category = category;
 		this.targetVersion = targetVersion;
 		this.issues = issues;
+		this.logTimes = logTimes;
 	}
 
 	// Property accessors
@@ -347,6 +350,29 @@ public class Issue implements java.io.Serializable {
 
 	public void setHistories(Set<History> histories) {
 		this.histories = histories;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "issue")
+	public Set<LogTime> getLogTimes() {
+		return logTimes;
+	}
+
+	public void setLogTimes(Set<LogTime> logTimes) {
+		this.logTimes = logTimes;
+	}
+
+	@Transient
+	public double getSpentTime() {
+		if (null != logTimes && 0 != logTimes.size()) {
+			for (LogTime logTime: logTimes) {
+				spentTime += logTime.getSpentTime();
+			}
+		}
+		return spentTime;
+	}
+
+	public void setSpentTime(double spentTime) {
+		this.spentTime = spentTime;
 	}
 
 	@Transient

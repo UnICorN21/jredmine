@@ -61,7 +61,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     public int update(Object id, List<Pair<String, Object>> properties) {
-        if (null == properties) return 0;
+        if (null == properties || 0 == properties.size()) return 0;
         String hql = "update " + getGenericType().getSimpleName() + " set";
         boolean flag = false;
 

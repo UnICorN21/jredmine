@@ -1,9 +1,9 @@
 <%@ page import="com.opensymphony.xwork2.util.ValueStack" %>
-<%@ page import="java.sql.Timestamp" %>
-<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.unicorn.Utils" %>
 <%@ page import="com.unicorn.action.IssueAction" %>
 <%@ page import="com.unicorn.domain.History" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huxley
@@ -140,7 +140,7 @@
           <th class="category">Category:</th>
           <td class="category"><s:property default="-" value="category"/></td>
           <th class="spent-time">Spent time:</th>
-          <td class="spent-time">-</td>
+          <td class="spent-time">${spentTime}&nbsp;h</td>
         </tr>
         <tr>
           <th class="fixed-version">Target version:</th>
@@ -183,6 +183,11 @@
               </li>
             </s:iterator>
           </ul>
+          <s:if test="%{null != history.note}">
+            <div class="wiki" id="journal-${history.id}-node">
+              <p>${history.note}</p>
+            </div>
+          </s:if>
         </div>
       </s:iterator>
     </div>
@@ -290,16 +295,16 @@
               <div class="split-content-left">
                 <p>
                   <label for="time_entry_hours">Spent time</label>
-                  <input id="time_entry_hours" size="6" type="number" name="loggedTime.logHours">&nbsp;Hours
+                  <input id="time_entry_hours" size="6" type="number" name="loggedTime.spentTime">&nbsp;Hours
                 </p>
               </div>
               <div class="split-content-right">
                 <p>
                   <label for="time_entry_activity_id">Activity</label>
-                  <select id="time_entry_activity_id" name="loggedTime.activityId">
-                    <!-- TODO: check and design for the `activity` module -->
-                    <option>--- Please select ---</option>
-                  </select>
+                  <s:select id="time_entry_activity_id" name="loggedTime.activityType"
+                            list="@com.unicorn.domain.LogTime$ActivityType@values()"
+                            listKey="name()" value="desc" headerKey=""
+                            headerValue="--- Please select---"/>
                 </p>
               </div>
               <p>

@@ -1,15 +1,13 @@
 package com.unicorn.domain;
 
-import java.sql.Timestamp;
-import java.util.*;
-import javax.persistence.*;
-
 import javafx.util.Pair;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Project entity. @author MyEclipse Persistence Tools
@@ -30,6 +28,8 @@ public class Project implements java.io.Serializable {
 	private Set<Project> projects = new HashSet<Project>(0);
 	private Set<Issue> issues = new HashSet<Issue>(0);
 	private Set<User> developers = new HashSet<User>(0);
+	private Set<Category> categories = new HashSet<Category>(0);
+	private Set<TargetVersion> targetVersions = new HashSet<TargetVersion>(0);
 
 	private Map<Issue.Tracker, List<Issue>> trackeredIssues = new HashMap<Issue.Tracker, List<Issue>>();
 
@@ -47,15 +47,18 @@ public class Project implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Project(User manager, Project parent, String name,
-			Timestamp createTime, Set<Project> projects, Set<Issue> issues, Set<User> developers) {
-		this.userByManager = manager;
-		this.parent = parent;
-		this.name = name;
+	public Project(Set<Category> categories, boolean closed, Timestamp createTime, Set<User> developers, String id, Set<Issue> issues, String name, Project parent, Set<Project> projects, Set<TargetVersion> targetVersions, User userByManager) {
+		this.categories = categories;
+		this.closed = closed;
 		this.createTime = createTime;
-		this.projects = projects;
-		this.issues = issues;
 		this.developers = developers;
+		this.id = id;
+		this.issues = issues;
+		this.name = name;
+		this.parent = parent;
+		this.projects = projects;
+		this.targetVersions = targetVersions;
+		this.userByManager = userByManager;
 	}
 
 	// Property accessors
@@ -73,7 +76,7 @@ public class Project implements java.io.Serializable {
 
 	@Type(type = "yes_no")
 	@Column(name = "closed", nullable = false, length = 1, columnDefinition = "varchar(1) default 'N'")
-	public boolean getClosed() {
+	public boolean isClosed() {
 		return closed;
 	}
 
@@ -137,7 +140,7 @@ public class Project implements java.io.Serializable {
 		this.issues = issues;
 	}
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "project_user_map", joinColumns = { @JoinColumn(name = "projectid") },
 	inverseJoinColumns = { @JoinColumn(name = "userid") })
 	public Set<User> getDevelopers() {
@@ -167,5 +170,23 @@ public class Project implements java.io.Serializable {
 			++right;
 		}
 		return new Pair<Integer, Integer>(left, right);
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
+	public Set<TargetVersion> getTargetVersions() {
+		return targetVersions;
+	}
+
+	public void setTargetVersions(Set<TargetVersion> targetVersions) {
+		this.targetVersions = targetVersions;
 	}
 }

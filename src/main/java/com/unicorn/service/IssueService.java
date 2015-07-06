@@ -3,9 +3,9 @@ package com.unicorn.service;
 import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
+import com.unicorn.domain.LogTime;
 import com.unicorn.domain.User;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -32,4 +32,6 @@ public interface IssueService {
      * @return
      */
     Issue createIssue(FormIssue formIssue, User author);
+
+    void logTime(LogTime logTime);
 }

@@ -1,13 +1,16 @@
 package com.unicorn.action;
 
 import com.unicorn.bean.FormIssue;
-import com.unicorn.bean.LogTime;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
+import com.unicorn.domain.LogTime;
 import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
 import net.sf.json.JSONArray;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Resource;
@@ -118,6 +121,14 @@ public class IssueAction extends BaseAction<Issue> {
     @Action(value = "edit_issue", results = @Result(type = "redirect", location = "single_issue.do?id=${formIssue.id}"))
     public String editIssue() {
         User author = (User)session.get(UserAction.USER);
+        if (0 != loggedTime.getSpentTime()) {
+            loggedTime.setUser(author);
+            issue.setId(formIssue.getId());
+            loggedTime.setIssue(issue);
+            issueService.logTime(loggedTime);
+            session.put(ISSUE_UPDATE_SUCCESS_FLAG, true);
+        }
+
         if (1 == issueService.updateIssue(formIssue, author, notes))
             session.put(ISSUE_UPDATE_SUCCESS_FLAG, true);
 
