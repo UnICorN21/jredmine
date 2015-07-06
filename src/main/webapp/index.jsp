@@ -1,14 +1,13 @@
-<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.opensymphony.xwork2.ognl.OgnlValueStack" %>
 <%@ page import="com.opensymphony.xwork2.util.ValueStack" %>
 <%@ page import="com.unicorn.domain.Project" %>
-<%@ page import="com.opensymphony.xwork2.ognl.OgnlValueStack" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 
 <head>
     <s:set name="hideMainMenu" value="true"/>
 </head>
-
 <!-- Content starts here. -->
 <div class="main" style="padding: 6px 10px 10px 10px; background: #fff;">
     <h2>Home</h2>

@@ -50,7 +50,7 @@ public class IssueServiceImpl implements IssueService {
         Map<String, Object> priorities = new HashMap<String, Object>();
         priorities.put("id", issueId);
         List<Issue> issues = issueDao.findByProperties(priorities, null);
-        if (null != issues) {
+        if (null != issues && 0 != issues.size()) {
             Issue issue = issues.get(0);
             if (!issue.getProject().getId().equals(lastProjectIdForIssue)) {
                 lastProjectIdForIssue = issue.getProject().getId();

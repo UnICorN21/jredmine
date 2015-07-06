@@ -60,7 +60,7 @@
         </s:if>
       </div>
       <h1>
-        <s:if test="%{null != #session.currentProject}">${session.currentProject.name}</s:if>
+        <s:if test="%{null != #hideMainMenu && null != #session.currentProject}">${session.currentProject.name}</s:if>
         <s:else>JRedmine</s:else>
       </h1>
       <s:if test="!#hideMainMenu">
