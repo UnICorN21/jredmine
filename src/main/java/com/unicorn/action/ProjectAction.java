@@ -1,9 +1,6 @@
 package com.unicorn.action;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
 import com.unicorn.domain.Project;
-import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
 import com.unicorn.service.ProjectService;
 import org.apache.struts2.convention.annotation.*;
@@ -67,7 +64,7 @@ public class ProjectAction extends BaseAction<Project> {
                     @Result(name = SUCCESS, location = "/project_issues.jsp")
             }),
             @Action(value = "new", results = {
-                    @Result(name = SUCCESS, location = "/project_new.jsp")
+                    @Result(name = SUCCESS, location = "/project_issue_new.jsp")
             }),
             @Action(value = "gantt", results = {
                     @Result(name = SUCCESS, location = "/project_gantt.jsp")
@@ -102,6 +99,12 @@ public class ProjectAction extends BaseAction<Project> {
     @Action(value = "list", results = @Result(location = "/projects.jsp"))
     public String listProjects() {
         projectList = projectService.getProjects(isClozed());
+        return SUCCESS;
+    }
+
+    @Action(value = "new_project", results = @Result(location = "overview?id=${project.id}"))
+    public String createProject() {
+        // TODO
         return SUCCESS;
     }
 

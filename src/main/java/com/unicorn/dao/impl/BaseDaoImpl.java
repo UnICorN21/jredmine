@@ -87,6 +87,14 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @SuppressWarnings("unchecked")
+    public List<T> findAll() {
+        Session session = getSessionFactory().getCurrentSession();
+        String hql = "from " + getGenericType().getSimpleName();
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
     public List<T> findByExample(T instance) {
         Session session = getSessionFactory().getCurrentSession();
         return session.createCriteria(instance.getClass()).add(Example.create(instance)).list();

@@ -30,6 +30,8 @@ public interface BaseDao<T> {
 
     void delete(Class<T> entityClazz , Serializable id);
 
+    List<T> findAll();
+
     List<T> findByExample(T instance);
 
     List<T> findByProperties(Map<String, Object> properties, List<String> additions);

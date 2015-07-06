@@ -2,8 +2,12 @@
 <decorators defaultdir="/layouts">
     <excludes>
         <pattern>/ajax_*</pattern>
+        <pattern>/ajax/*</pattern>
     </excludes>
 
+    <decorator name="admin" page="admin.jsp">
+        <pattern>/admin/*</pattern>
+    </decorator>
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>

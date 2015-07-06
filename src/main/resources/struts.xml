@@ -12,6 +12,5 @@
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.objectFactory" value="spring"/>
     <package name="base" extends="json-default,struts-default">
-        <!-- TODO: Set mapping. -->
     </package>
 </struts>

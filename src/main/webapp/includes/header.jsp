@@ -27,6 +27,9 @@
               Projects
             </s:a>
           </li>
+          <s:if test="%{@com.unicorn.domain.User$Role@ADMIN == #session.user.role}">
+            <li><a href="/admin.jsp">Administration</a></li>
+          </s:if>
           <li><a href="http://www.redmine.org/guide">Help</a></li>
         </ul>
       </div>

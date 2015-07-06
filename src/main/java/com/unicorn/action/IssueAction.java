@@ -137,7 +137,7 @@ public class IssueAction extends BaseAction<Issue> {
 
     @Action(value = "new_issue", results = {
             @Result(name = REDIRECT, type = "redirect", location = "single_issue.do?id=${id}"),
-            @Result(name = SUCCESS, location = "/project_new.jsp")
+            @Result(name = SUCCESS, location = "/project_issue_new.jsp")
     })
     public String newIssue() {
         User author = (User)session.get(UserAction.USER);
