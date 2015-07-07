@@ -36,4 +36,13 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> getProjects(boolean closed) {
         return projectDao.findRootProjects(closed);
     }
+
+    public Project create(Project project) {
+        projectDao.save(project);
+        return project;
+    }
+
+    public void delete(String id) {
+        projectDao.delete(Project.class, id);
+    }
 }

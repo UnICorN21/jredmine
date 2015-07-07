@@ -1,7 +1,6 @@
 package com.unicorn.service;
 
 import com.unicorn.domain.Project;
-import com.unicorn.domain.User;
 
 import java.util.List;
 
@@ -14,4 +13,8 @@ public interface ProjectService {
     Project getProject(String id);
 
     List<Project> getProjects(boolean closed);
+
+    Project create (Project project);
+
+    void delete(String id);
 }

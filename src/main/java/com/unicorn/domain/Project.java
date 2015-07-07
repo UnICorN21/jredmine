@@ -14,8 +14,8 @@ import java.util.*;
  */
 @Entity
 @DynamicInsert
-@Table(name = "project", catalog = "jredmine")
-public class Project implements java.io.Serializable {
+@Table(name = "project", catalog = "jredmine", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+public class Project implements java.io.Serializable, Cloneable {
 
 	// Fields
 
@@ -23,8 +23,10 @@ public class Project implements java.io.Serializable {
 	private User userByManager;
 	private Project parent;
 	private String name;
-	private Timestamp createTime;
-	private boolean closed;
+	private String description;
+	private boolean isPublic = true;
+	private Timestamp createTime = new Timestamp((new Date()).getTime());
+	private boolean closed = false;
 	private Set<Project> projects = new HashSet<Project>(0);
 	private Set<Issue> issues = new HashSet<Issue>(0);
 	private Set<User> developers = new HashSet<User>(0);
@@ -59,6 +61,19 @@ public class Project implements java.io.Serializable {
 		this.projects = projects;
 		this.targetVersions = targetVersions;
 		this.userByManager = userByManager;
+	}
+
+	@Override
+	public Project clone() throws CloneNotSupportedException {
+		Project project = (Project)super.clone();
+		project.setId(null);
+		project.setName(name + "_copy");
+		project.setProjects(new HashSet<Project>(projects));
+		project.setIssues(new HashSet<Issue>(issues));
+		project.setDevelopers(new HashSet<User>(developers));
+		project.setCategories(new HashSet<Category>(categories));
+		project.setTargetVersions(new HashSet<TargetVersion>(targetVersions));
+		return project;
 	}
 
 	// Property accessors
@@ -111,6 +126,25 @@ public class Project implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Column(name = "description", nullable = true, length = 255)
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Type(type = "yes_no")
+	@Column(name = "public", nullable = false, length = 1)
+	public boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(boolean isPublic) {
+		this.isPublic = isPublic;
 	}
 
 	@Column(name = "create_time", nullable = false, length = 19)

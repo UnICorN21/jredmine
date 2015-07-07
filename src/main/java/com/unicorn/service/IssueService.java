@@ -31,7 +31,7 @@ public interface IssueService {
      * @param author
      * @return
      */
-    Issue createIssue(FormIssue formIssue, User author);
+    Issue create(FormIssue formIssue, User author);
 
     void logTime(LogTime logTime);
 }

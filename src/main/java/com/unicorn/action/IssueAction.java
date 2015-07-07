@@ -142,7 +142,7 @@ public class IssueAction extends BaseAction<Issue> {
     public String newIssue() {
         User author = (User)session.get(UserAction.USER);
         try {
-            issue = issueService.createIssue(formIssue, author);
+            issue = issueService.create(formIssue, author);
             session.put(ISSUE_CREATE_SUCCESS_FLAG, true);
         } catch (Exception e) {
             e.printStackTrace();

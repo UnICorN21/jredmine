@@ -23,12 +23,12 @@
         <legend>Filters</legend>
         <label for="status">Status:</label>
         <select id="status">
-          <option>active</option>
+          <option>all</option>
         </select>
         <label for="name">Project:</label>
         <input id="name" size="30" type="text" name="name">
         <input type="submit" value="Apply" class="small">
-        <a href="" class="icon icon-reload">Clear</a>
+        <s:a action="projects" namespace="admin" class="icon icon-reload">Clear</s:a>
       </fieldset>
     </form>
     <div class="autoscroll">
@@ -47,31 +47,41 @@
           <tr class="root odd">
           </s:if>
           <s:else>
-          <tr class="root">
+          <tr class="root even">
           </s:else>
             <td class="name"><span>
-              <s:a action="overview" namespace="/project">
+              <s:a action="settings" namespace="/project">
                 <s:param name="id" value="#project.id"/>
                 ${project.name}
               </s:a>
             </span></td>
-            <td><img src="/static/images/toggle_check.png" alt="Toggle check"></td>
+            <td>
+              <s:if test="%{#project.isPublic}">
+                <img src="/static/images/toggle_check.png" alt="Toggle check">
+              </s:if>
+            </td>
             <td>${project.createTime}</td>
             <td class="buttons">
               <a class="icon icon-lock" href="">Archive</a>
-              <a class="icon icon-copy" href="">Copy</a>
-              <a class="icon icon-delete" href="">Delete</a>
+              <s:a class="icon icon-copy" action="copy" namespace="/project">
+                <s:param name="id" value="#project.id"/>
+                Copy
+              </s:a>
+              <s:a class="icon icon-copy" action="delete" namespace="/project">
+                <s:param name="id" value="#project.id"/>
+                Delete
+              </s:a>
             </td>
           </tr>
-          <s:iterator value="project.projects" var="sub" status="pp">
-            <s:if test="%{false == (#p.odd ^ #pp.odd)}">
+          <s:iterator value="#project.projects" var="sub" status="pp">
+            <s:if test="%{true == (#p.odd ^ #pp.odd)}">
             <tr class="child odd">
             </s:if>
             <s:else>
-            <tr class="child">
+            <tr class="child even">
             </s:else>
             <td class="name"><span>
-              <s:a action="overview" namespace="/project">
+              <s:a action="settings" namespace="/project">
                 <s:param name="id" value="#sub.id"/>
                 ${sub.name}
               </s:a>
@@ -80,8 +90,14 @@
             <td>${sub.createTime}</td>
             <td class="buttons">
               <a class="icon icon-lock" href="">Archive</a>
-              <a class="icon icon-copy" href="">Copy</a>
-              <a class="icon icon-delete" href="">Delete</a>
+              <s:a class="icon icon-copy" action="copy" namespace="/project">
+                <s:param name="id" value="#project.id"/>
+                Copy
+              </s:a>
+              <s:a class="icon icon-copy" action="delete" namespace="/project">
+                <s:param name="id" value="#sub.id"/>
+                Delete
+              </s:a>
             </td>
             </tr>
           </s:iterator>

@@ -57,7 +57,6 @@
     </form>
     <script>
       $('#register-form').validate({
-        debug: true,
         ignore: '*:not([name])',
         rules: {
           username: "required",

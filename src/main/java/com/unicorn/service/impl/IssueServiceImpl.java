@@ -96,7 +96,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
 
-    public Issue createIssue(FormIssue formIssue, User author) {
+    public Issue create(FormIssue formIssue, User author) {
         Issue issue = new Issue(formIssue, author);
         issueDao.save(issue);
 

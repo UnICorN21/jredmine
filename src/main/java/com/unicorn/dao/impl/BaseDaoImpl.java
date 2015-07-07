@@ -83,7 +83,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     public void delete(Class<T> entityClazz, Serializable id) {
-        // TODO
+        getSessionFactory().getCurrentSession()
+                .createQuery("delete " + entityClazz.getSimpleName()
+                        + " en where en.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @SuppressWarnings("unchecked")
