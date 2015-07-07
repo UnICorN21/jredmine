@@ -14,7 +14,7 @@
 <div class="main">
   <div class="content">
     <div class="contextual">
-      <a class="icon icon-add" href="">New Groups</a>
+      <a class="icon icon-add" href="/group_new.jsp">New Groups</a>
     </div>
     <h2>Groups</h2>
     <div class="autoscroll">

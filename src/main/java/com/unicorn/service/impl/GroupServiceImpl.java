@@ -21,6 +21,11 @@ public class GroupServiceImpl implements GroupService {
         return groupDao.findAll();
     }
 
+    public Group create(Group group) {
+        groupDao.save(group);
+        return group;
+    }
+
     public void delete(int id) {
         groupDao.delete(Group.class, id);
     }

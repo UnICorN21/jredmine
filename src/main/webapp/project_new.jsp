@@ -30,7 +30,7 @@
         }
       }
     %>
-    <form class="new_project" id="new_project" action="/project/new.do" method="post">
+    <form class="new" id="new_project" action="/project/new.do" method="post">
       <div class="box tabular">
         <p>
           <label for="project_name">
