@@ -31,6 +31,7 @@ public class User implements java.io.Serializable {
 	private Set<Issue> issuesForAssigner = new HashSet<Issue>(0);
 	private Set<Project> projectsByManager = new HashSet<Project>(0);
 	private Set<Project> developProjects = new HashSet<Project>(0);
+	private Set<Group> groups = new HashSet<Group>(0);
 
 	// Constructors
 
@@ -168,12 +169,21 @@ public class User implements java.io.Serializable {
 		this.projectsByManager = projectsByManager;
 	}
 
-	@ManyToMany(mappedBy = "developers")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "developers")
 	public Set<Project> getDevelopProjects() {
 		return developProjects;
 	}
 
 	public void setDevelopProjects(Set<Project> developProjects) {
 		this.developProjects = developProjects;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	public Set<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
 	}
 }

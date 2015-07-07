@@ -34,6 +34,9 @@
         <li>
           <a class="users" href="/admin/users.do">Users</a>
         </li>
+        <li>
+          <a class="groups" href="/admin/groups.do">Groups</a>
+        </li>
       </ul>
     </div>
   </aside>

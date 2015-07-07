@@ -40,6 +40,7 @@
                 <value>com.unicorn.domain.LogTime</value>
                 <value>com.unicorn.domain.Category</value>
                 <value>com.unicorn.domain.TargetVersion</value>
+                <value>com.unicorn.domain.Group</value>
             </list>
         </property>
         <property name="hibernateProperties">

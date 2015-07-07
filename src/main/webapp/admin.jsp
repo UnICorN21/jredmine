@@ -18,6 +18,7 @@
     <ul id="admin-menu">
       <li><s:a action="projects" namespace="/admin" class="projects">Projects</s:a></li>
       <li><s:a action="users" namespace="/admin" class="users">Users</s:a></li>
+      <li><s:a action="groups" namespace="/admin" class="groups">Groups</s:a></li>
     </ul>
   </div>
 </div>

@@ -17,7 +17,7 @@
     <div class="contextual">
       <a class="icon icon-add" href="">New User</a>
     </div>
-    <h2>Projects</h2>
+    <h2>Users</h2>
     <form action="" method="get">
       <fieldset>
         <legend>Filters</legend>
