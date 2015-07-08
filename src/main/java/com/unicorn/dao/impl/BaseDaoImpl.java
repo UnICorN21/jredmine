@@ -52,7 +52,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public Serializable save(T entity) {
         Serializable result = getSessionFactory().getCurrentSession().save(entity);
         getSessionFactory().getCurrentSession().flush();
-        getSessionFactory().getCurrentSession().clear();
+//        getSessionFactory().getCurrentSession().clear();
         return result;
     }
 

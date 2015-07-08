@@ -74,6 +74,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		project.setDevelopers(new HashSet<User>(developers));
 		project.setCategories(new HashSet<Category>(categories));
 		project.setTargetVersions(new HashSet<TargetVersion>(targetVersions));
+		project.setTrackers(new HashSet<Tracker>(trackers));
 		return project;
 	}
 
@@ -186,7 +187,9 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.developers = developers;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "projects")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tracker_project_map", joinColumns = { @JoinColumn(name = "pid") },
+	inverseJoinColumns = { @JoinColumn(name = "tid") })
 	public Set<Tracker> getTrackers() {
 		return trackers;
 	}

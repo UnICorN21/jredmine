@@ -58,12 +58,23 @@
           <s:checkbox name="inherit" fieldValue="true" label="Inherit members"/>
         </p>
       </div>
-      <fieldset class="box tabular">
-        <legend>Modules</legend>
-
-      </fieldset>
-      <fieldset class="box tabular">
+      <fieldset class="box tabular trackers">
         <legend>Trackers</legend>
+        <s:action name="trackers" namespace="/admin" var="src" executeResult="false"/>
+        <s:iterator value="#src.trackers" var="tracker" status="t">
+          <s:if test="%{#t.index < 3}">
+            <label class="floating">
+              <input name="projectTrackers" type="checkbox" value="${tracker.id}" checked>
+              ${tracker.name}
+            </label>
+          </s:if>
+          <s:else>
+            <label class="floating">
+              <input name="projectTrackers" type="checkbox" value="${tracker.name}">
+              ${tracker.name}
+            </label>
+          </s:else>
+        </s:iterator>
       </fieldset>
       <input type="submit" name="submitType" value="Create">
       <input type="submit" name="submitType" value="Create and continue">

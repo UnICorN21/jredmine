@@ -1,15 +1,14 @@
 package com.unicorn.service.impl;
 
 import com.unicorn.dao.ProjectDao;
+import com.unicorn.dao.TrackerDao;
 import com.unicorn.domain.Project;
+import com.unicorn.domain.Tracker;
 import com.unicorn.service.ProjectService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Huxley on 6/29/15.
@@ -19,6 +18,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Resource
     private ProjectDao projectDao;
+
+    @Resource
+    private TrackerDao trackerDao;
 
     public Project getProject(String id) {
         Map<String, Object> properties = new HashMap<String, Object>();
@@ -40,6 +42,16 @@ public class ProjectServiceImpl implements ProjectService {
     public Project create(Project project) {
         projectDao.save(project);
         return project;
+    }
+
+    public Project create(Project project, int[] trackerIds) {
+        Set<Tracker> trackers = new HashSet<Tracker>();
+        for (int i = 0; i < trackerIds.length; ++i) {
+            Tracker tracker = trackerDao.get(Tracker.class, trackerIds[i]);
+            trackers.add(tracker);
+        }
+        project.setTrackers(trackers);
+        return create(project);
     }
 
     public void delete(String id) {

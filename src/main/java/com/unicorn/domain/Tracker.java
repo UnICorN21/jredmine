@@ -50,9 +50,7 @@ public class Tracker implements Serializable {
         this.name = name;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "tracker_project_map", joinColumns = @JoinColumn(name = "tid"),
-                inverseJoinColumns = @JoinColumn(name = "pid"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "trackers")
     public Set<Project> getProjects() {
         return projects;
     }

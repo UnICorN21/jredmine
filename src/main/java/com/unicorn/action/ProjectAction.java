@@ -3,7 +3,6 @@ package com.unicorn.action;
 import com.unicorn.Utils;
 import com.unicorn.domain.Project;
 import com.unicorn.domain.User;
-import com.unicorn.service.IssueService;
 import com.unicorn.service.ProjectService;
 import org.apache.struts2.convention.annotation.*;
 import org.springframework.context.annotation.Scope;
@@ -32,9 +31,6 @@ public class ProjectAction extends BaseAction<Project> {
     @Resource
     private ProjectService projectService;
 
-    @Resource
-    private IssueService issueService;
-
     private Project project;
     private String parentId;
     private boolean inherit;
@@ -42,6 +38,8 @@ public class ProjectAction extends BaseAction<Project> {
     private String submitType;
 
     private List<Project> projectList;
+
+    private int[] trackerIds;
 
     private boolean clozed;
 
@@ -67,6 +65,14 @@ public class ProjectAction extends BaseAction<Project> {
 
     public void setInherit(boolean inherit) {
         this.inherit = inherit;
+    }
+
+    public int[] getProjectTrackers() {
+        return trackerIds;
+    }
+
+    public void setProjectTrackers(int[] trackers) {
+        this.trackerIds = trackers;
     }
 
     @Override
@@ -147,7 +153,7 @@ public class ProjectAction extends BaseAction<Project> {
         User manager = Utils.getCurrentUser();
         project.setUserByManager(manager);
         try {
-            project = projectService.create(project);
+            project = projectService.create(project, trackerIds);
             session.put(CURRENT_PROJECT, project);
             session.put(PROJECT_CREATE_SUCCESS_FLAG, true);
         } catch (Exception e) {
