@@ -15,6 +15,7 @@
 
 <div class="main">
   <div class="content" style="width: 100%">
+    <s:debug/>
     <h2>New Project</h2>
     <%
       Object updateFlag = Utils.getSessionAttrAndRemoved(session, ProjectAction.PROJECT_CREATE_SUCCESS_FLAG);
@@ -30,7 +31,7 @@
         }
       }
     %>
-    <form class="new" id="new_project" action="/project/new.do" method="post">
+    <form class="new" id="new_project" action="/project/create.do" method="post">
       <div class="box tabular">
         <p>
           <label for="project_name">
@@ -59,6 +60,7 @@
       </div>
       <fieldset class="box tabular">
         <legend>Modules</legend>
+
       </fieldset>
       <fieldset class="box tabular">
         <legend>Trackers</legend>

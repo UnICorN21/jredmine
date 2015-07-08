@@ -2,9 +2,11 @@ package com.unicorn.domain;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,18 +17,17 @@ import java.util.Set;
 @Entity
 @DynamicInsert
 @Table(name = "user", catalog = "jredmine", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
-public class User implements java.io.Serializable {
-	public enum Role { NORMAL, ADMIN }
+public class User implements java.io.Serializable, UserDetails {
 	// Fields
 
 	private String id;
 	private String username;
 	private String password;
-	private Role role = Role.NORMAL;
 	private String email;
 	private Integer emailHidden = 1;
 	private Timestamp registerTime = new Timestamp((new Date()).getTime());
 	private Timestamp lastConnectionTime = new Timestamp((new Date()).getTime());
+	private Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>(0);
 	private Set<Issue> issuesForAssignee = new HashSet<Issue>(0);
 	private Set<Issue> issuesForAssigner = new HashSet<Issue>(0);
 	private Set<Project> projectsByManager = new HashSet<Project>(0);
@@ -94,16 +95,6 @@ public class User implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "role", nullable = false)
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 
 	@Column(name = "email", nullable = false, length = 100)
@@ -185,5 +176,39 @@ public class User implements java.io.Serializable {
 
 	public void setGroups(Set<Group> groups) {
 		this.groups = groups;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+	public Set<GrantedAuthority> getGrantedAuthorities() {
+		return grantedAuthorities;
+	}
+
+	public void setGrantedAuthorities(Set<GrantedAuthority> grantedAuthorities) {
+		this.grantedAuthorities = grantedAuthorities;
+	}
+
+	@Transient
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return grantedAuthorities;
+	}
+
+	@Transient
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Transient
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Transient
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Transient
+	public boolean isEnabled() {
+		return true;
 	}
 }

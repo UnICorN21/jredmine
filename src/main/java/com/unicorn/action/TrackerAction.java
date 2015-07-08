@@ -1,34 +1,32 @@
 package com.unicorn.action;
 
-import com.unicorn.domain.Group;
-import com.unicorn.service.GroupService;
+import com.unicorn.domain.Tracker;
+import com.unicorn.service.TrackerService;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 
 /**
- * Created by Huxley on 7/7/15.
+ * Created by Huxley on 7/8/15.
  */
-@Controller
-@Namespace("/group")
+@Namespace("/tracker")
 @Scope("prototype")
 @ParentPackage("base")
-public class GroupAction extends BaseAction<Group> {
+public class TrackerAction extends BaseAction<Tracker> {
     private static final String REDIRECT = "redirect";
     private static final String SUBMIT_TYPE_CREATE = "Create";
     private static final String SUBMIT_TYPE_CREATE_AND_CONTINUE = "Create and continue";
 
-    public static final String GROUP_CREATE_SUCCESS_FLAG = "group_create_success_flag";
+    public static final String TRACKER_CREATE_SUCCESS_FLAG = "tracker_create_success_flag";
 
     @Resource
-    private GroupService groupService;
+    private TrackerService trackerService;
 
-    private Group group;
+    private Tracker tracker;
 
     private String submitType;
 
@@ -41,30 +39,30 @@ public class GroupAction extends BaseAction<Group> {
     }
 
     @Override
-    public Group getModel() {
-        if (null == group) group = new Group();
-        return group;
+    public Tracker getModel() {
+        if (null == tracker) tracker = new Tracker();
+        return tracker;
     }
 
     @Action(value = "create", results = {
-            @Result(name = REDIRECT, type = REDIRECT, location = "/admin/groups.do"),
-            @Result(name = SUCCESS, location = "/group_new.jsp")
+            @Result(name = REDIRECT, type = REDIRECT, location = "/admin/trackers.do"),
+            @Result(name = SUCCESS, location = "/tracker_new.jsp")
     })
     public String create() {
         try {
-            group = groupService.create(group);
+            tracker = trackerService.create(tracker);
+            session.put(TRACKER_CREATE_SUCCESS_FLAG, true);
         } catch (Exception e) {
             e.printStackTrace();
-            session.put(GROUP_CREATE_SUCCESS_FLAG, false);
+            session.put(TRACKER_CREATE_SUCCESS_FLAG, false);
         }
         if (SUBMIT_TYPE_CREATE.equals(submitType)) return REDIRECT;
         else return SUCCESS;
     }
 
-    @Action(value = "delete", results = @Result(type = REDIRECT, location = "/admin/groups.do"))
+    @Action(value = "delete", results = @Result(type = REDIRECT, location = "/admin/trackers.do"))
     public String delete() {
-        groupService.delete(group.getId());
-
+        trackerService.delete(tracker.getId());
         return SUCCESS;
     }
 }

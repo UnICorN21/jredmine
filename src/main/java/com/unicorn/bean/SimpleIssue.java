@@ -1,11 +1,7 @@
 package com.unicorn.bean;
 
 import com.unicorn.domain.Issue;
-import com.unicorn.domain.Issue.Priority;
-import com.unicorn.domain.Issue.Status;
-import com.unicorn.domain.Issue.Tracker;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
@@ -27,7 +23,7 @@ public class SimpleIssue {
         this.subject = issue.getSubject();
         this.priority = issue.getPriority().getDesc();
         this.status = issue.getStatus().getDesc();
-        this.tracker = issue.getTracker().getDesc();
+        this.tracker = issue.getTracker().getName();
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.updateTime = df.format(issue.getUpdateTime());

@@ -40,9 +40,9 @@
               Tracker
               <span class="required">*</span>
             </label>
-            <s:select id="issue_tracker_id" name="formIssue.tracker" value="@com.unicorn.domain.Issue$Tracker@Feature"
-                    list="@com.unicorn.domain.Issue$Tracker@values()" requiredLabel="true"
-                    listKey="name()" listValue="desc"/>
+            <s:select id="issue_tracker_id" name="formIssue.trackerId" value="1"
+                    list="#session.currentProject.trackers" requiredLabel="true"
+                    listKey="id" listValue="name"/>
           </p>
           <p>
             <label for="issue_subject">

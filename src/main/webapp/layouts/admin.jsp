@@ -37,6 +37,9 @@
         <li>
           <a class="groups" href="/admin/groups.do">Groups</a>
         </li>
+        <li>
+          <a class="trackers" href="/admin/trackers.do">Trackers</a>
+        </li>
       </ul>
     </div>
   </aside>

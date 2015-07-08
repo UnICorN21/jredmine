@@ -2,9 +2,11 @@ package com.unicorn.action;
 
 import com.unicorn.domain.Group;
 import com.unicorn.domain.Project;
+import com.unicorn.domain.Tracker;
 import com.unicorn.domain.User;
 import com.unicorn.service.GroupService;
 import com.unicorn.service.ProjectService;
+import com.unicorn.service.TrackerService;
 import com.unicorn.service.UserService;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -34,11 +36,16 @@ public class AdminAction extends BaseAction {
     @Resource
     private GroupService groupService;
 
+    @Resource
+    private TrackerService trackerService;
+
     private List<User> users;
 
     private List<Project> projects;
 
     private List<Group> groups;
+
+    private List<Tracker> trackers;
 
     public List<User> getUsers() {
         return users;
@@ -52,8 +59,8 @@ public class AdminAction extends BaseAction {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public List<Tracker> getTrackers() {
+        return trackers;
     }
 
     @Action(value = "projects", results = @Result(location = "/admin_projects.jsp"))
@@ -71,6 +78,12 @@ public class AdminAction extends BaseAction {
     @Action(value = "groups", results = @Result(location = "/admin_groups.jsp"))
     public String groups() {
         groups = groupService.get();
+        return SUCCESS;
+    }
+
+    @Action(value = "trackers", results = @Result(location = "/admin_trackers.jsp"))
+    public String trackers() {
+        trackers = trackerService.get();
         return SUCCESS;
     }
 }

@@ -1,8 +1,6 @@
 <%@ page import="com.opensymphony.xwork2.util.ValueStack" %>
-<%@ page import="com.unicorn.domain.Issue" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="com.unicorn.domain.Project" %>
+<%@ page import="com.unicorn.domain.Tracker" %>
 <%@ page import="javafx.util.Pair" %>
 <%--
   Created by IntelliJ IDEA.
@@ -33,23 +31,18 @@
         <%
           ValueStack vs = (ValueStack)request.getAttribute("struts.valueStack");
           Project project = (Project)vs.getRoot().get(0);
-          Pair<Integer, Integer> featurePair = project.getTrackeredIssuesStatic(Issue.Tracker.Feature);
-          Pair<Integer, Integer> bugPair = project.getTrackeredIssuesStatic(Issue.Tracker.Bug);
-          Pair<Integer, Integer> supportPair = project.getTrackeredIssuesStatic(Issue.Tracker.Support);
         %>
         <ul>
-          <li>
-            <a href="/project/issues?set_filter=feature">Feature</a>:
-            <%=featurePair.getKey()%>&nbsp;open&nbsp;/&nbsp;<%=featurePair.getValue()%>
-          </li>
-          <li>
-            <a href="/project/issues?set_filter=bug">Bug</a>:
-            <%=bugPair.getKey()%>&nbsp;open&nbsp;/&nbsp;<%=bugPair.getValue()%>
-          </li>
-          <li>
-            <a href="/project/issues?set_filter=support">Support</a>:
-            <%=supportPair.getKey()%>&nbsp;open&nbsp;/&nbsp;<%=supportPair.getValue()%>
-          </li>
+          <s:iterator value="trackers" var="trackerId">
+            <%
+              Tracker trackerId = (Tracker)vs.getRoot().get(0);
+              Pair<Integer, Integer> kvp = project.getTrackeredIssuesStatic(trackerId);
+            %>
+            <li>
+              <a href="">${trackerId.name}</a>:&nbsp;
+              <%=kvp.getKey()%>&nbsp;open&nbsp;/&nbsp;<%=kvp.getValue()%>
+            </li>
+          </s:iterator>
         </ul>
         <p>
           <a href="/project/issues">View all issues</a> &nbsp;|&nbsp;

@@ -1,5 +1,6 @@
 package com.unicorn.action;
 
+import com.unicorn.Utils;
 import com.unicorn.domain.Project;
 import com.unicorn.domain.User;
 import com.unicorn.service.IssueService;
@@ -130,8 +131,8 @@ public class ProjectAction extends BaseAction<Project> {
         return SUCCESS;
     }
 
-    @Action(value = "new", results = {
-            @Result(name = REDIRECT, type = REDIRECT, location = "overview.do?id=${project.id}"),
+    @Action(value = "create", results = {
+            @Result(name = REDIRECT, type = REDIRECT, location = "overview.do?id=${id}"),
             @Result(name = SUCCESS, location = "/project_new.jsp")
     })
     public String create() {
@@ -143,7 +144,7 @@ public class ProjectAction extends BaseAction<Project> {
                 project.setDevelopers(developers);
             }
         }
-        User manager = (User)session.get(UserAction.USER);
+        User manager = Utils.getCurrentUser();
         project.setUserByManager(manager);
         try {
             project = projectService.create(project);

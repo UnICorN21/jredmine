@@ -1,7 +1,6 @@
 package com.unicorn.bean;
 
 import com.unicorn.domain.Issue;
-import freemarker.template.SimpleDate;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +12,7 @@ public class FormIssue {
     private Integer id;
     private String projectId;
     private Integer parentId;
-    private Issue.Tracker tracker;
+    private Integer trackerId;
     private String subject;
     private Issue.Status status;
     private Issue.Priority priority;
@@ -30,13 +29,11 @@ public class FormIssue {
         this.id = issue.getId();
         this.projectId = issue.getProject().getId();
         this.parentId = null != issue.getParent() ? issue.getParent().getId() : null;
-        this.tracker = issue.getTracker();
+        this.trackerId = issue.getTracker().getId();
         this.subject = issue.getSubject();
         this.status = issue.getStatus();
         this.priority = issue.getPriority();
         this.assigneeId = issue.getUserByAssignee().getId();
-//        this.startDate = null != issue.getStartDate() ? issue.getStartDate().toString() : "";
-//        this.dueDate = null != issue.getDueDate() ? issue.getDueDate().toString() : "";
         this.startDate = issue.getStartDate();
         this.dueDate = issue.getDueDate();
         this.estimatedTime = issue.getEstimatedTime();
@@ -44,7 +41,7 @@ public class FormIssue {
         this.description = issue.getDescription();
     }
 
-    public FormIssue(String assigneeId, Date dueDate, Double estimatedTime, Integer id, Issue.Priority priority, Integer progress, String projectId, Integer parentId, Date startDate, Issue.Status status, String subject, Issue.Tracker tracker, String description) {
+    public FormIssue(String assigneeId, Date dueDate, Double estimatedTime, Integer id, Issue.Priority priority, Integer progress, String projectId, Integer parentId, Date startDate, Issue.Status status, String subject, Integer trackerId, String description) {
         this.assigneeId = assigneeId;
         this.dueDate = dueDate;
         this.estimatedTime = estimatedTime;
@@ -56,7 +53,7 @@ public class FormIssue {
         this.startDate = startDate;
         this.status = status;
         this.subject = subject;
-        this.tracker = tracker;
+        this.trackerId = trackerId;
         this.description = description;
     }
 
@@ -142,12 +139,12 @@ public class FormIssue {
         this.subject = subject;
     }
 
-    public Issue.Tracker getTracker() {
-        return tracker;
+    public Integer getTrackerId() {
+        return trackerId;
     }
 
-    public void setTracker(Issue.Tracker tracker) {
-        this.tracker = tracker;
+    public void setTrackerId(Integer trackerId) {
+        this.trackerId = trackerId;
     }
 
     public Integer getParentId() {

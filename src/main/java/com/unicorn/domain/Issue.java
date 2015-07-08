@@ -16,19 +16,6 @@ import java.util.Set;
 @DynamicInsert
 @Table(name = "issue", catalog = "jredmine")
 public class Issue implements java.io.Serializable {
-	public enum Tracker {
-		Feature("Feature"), Bug("Bug"), Support("Support");
-
-		private String desc;
-
-		private Tracker(String desc) {
-			this.desc = desc;
-		}
-
-		public String getDesc() {
-			return desc;
-		}
-	}
 	public enum Status {
 		New("New"), In_Progress("In progress"), Resolved("Resolved"), Feedback("Feedback"), Closed("Closed");
 
@@ -100,7 +87,8 @@ public class Issue implements java.io.Serializable {
 		this.subject = formIssue.getSubject();
 		this.priority = formIssue.getPriority();
 		this.status = formIssue.getStatus();
-		this.tracker = formIssue.getTracker();
+		this.tracker = new Tracker();
+		this.tracker.setId(formIssue.getTrackerId());
 		this.createTime = new Timestamp((new Date()).getTime());
 		this.updateTime = this.createTime;
 		this.startDate = formIssue.getStartDate();
@@ -250,8 +238,8 @@ public class Issue implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "tracker", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tracker", nullable = false)
 	public Tracker getTracker() {
 		return this.tracker;
 	}

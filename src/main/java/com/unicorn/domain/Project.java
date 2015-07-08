@@ -30,10 +30,11 @@ public class Project implements java.io.Serializable, Cloneable {
 	private Set<Project> projects = new HashSet<Project>(0);
 	private Set<Issue> issues = new HashSet<Issue>(0);
 	private Set<User> developers = new HashSet<User>(0);
+	private Set<Tracker> trackers = new HashSet<Tracker>(0);
 	private Set<Category> categories = new HashSet<Category>(0);
 	private Set<TargetVersion> targetVersions = new HashSet<TargetVersion>(0);
 
-	private Map<Issue.Tracker, List<Issue>> trackeredIssues = new HashMap<Issue.Tracker, List<Issue>>();
+	private Map<Tracker, List<Issue>> trackeredIssues = new HashMap<Tracker, List<Issue>>();
 
 	// Constructors
 
@@ -185,8 +186,16 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.developers = developers;
 	}
 
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "projects")
+	public Set<Tracker> getTrackers() {
+		return trackers;
+	}
 
-	public List<Issue> getTrackeredIssues(Issue.Tracker tracker) {
+	public void setTrackers(Set<Tracker> trackers) {
+		this.trackers = trackers;
+	}
+
+	public List<Issue> getTrackeredIssues(Tracker tracker) {
 		if (null != trackeredIssues.get(tracker)) return trackeredIssues.get(tracker);
 		List<Issue> ans = new ArrayList<Issue>();
 		for (Issue issue: issues) {
@@ -196,7 +205,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		return ans;
 	}
 
-	public Pair<Integer, Integer> getTrackeredIssuesStatic(Issue.Tracker tracker) {
+	public Pair<Integer, Integer> getTrackeredIssuesStatic(Tracker tracker) {
 		List<Issue> issues = getTrackeredIssues(tracker);
 		int left = 0, right = 0;
 		for (Issue issue: issues) {

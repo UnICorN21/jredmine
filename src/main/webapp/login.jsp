@@ -1,4 +1,3 @@
-<%@ page import="com.unicorn.Utils" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huxley
@@ -15,20 +14,6 @@
 
 <div class="main">
  <div class="content" style="width: 100%">
-   <s:if test="%{null != #session.user.id}">
-     <%
-       String redirectPath = (String)Utils.getSessionAttrAndRemoved(session, "redirectpath");
-       if (!redirectPath.contains("login.do")) response.sendRedirect(redirectPath);
-       else {
-     %>
-     <div class="login-form">
-       <p>So where are you from ?</p>
-     </div>
-     <%
-       }
-     %>
-   </s:if>
-   <s:else>
      <form action="/login.do" method="post">
        <div class="login-form" id="login-form">
          <p><span>Login:</span><input name="username" type="text"></p>
@@ -36,6 +21,5 @@
          <button type="submit">Login>></button>
        </div>
      </form>
-   </s:else>
  </div>
 </div>

@@ -13,7 +13,6 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory"/>
 
-
     <context:annotation-config/>
     <context:component-scan base-package="com.unicorn"/>
 
@@ -33,6 +32,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.unicorn.domain.User</value>
+                <value>com.unicorn.domain.GrantedAuthority</value>
                 <value>com.unicorn.domain.Project</value>
                 <value>com.unicorn.domain.Issue</value>
                 <value>com.unicorn.domain.History</value>
@@ -41,6 +41,7 @@
                 <value>com.unicorn.domain.Category</value>
                 <value>com.unicorn.domain.TargetVersion</value>
                 <value>com.unicorn.domain.Group</value>
+                <value>com.unicorn.domain.Tracker</value>
             </list>
         </property>
         <property name="hibernateProperties">

@@ -2,12 +2,16 @@ package com.unicorn;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import com.unicorn.domain.User;
 import javafx.util.Pair;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Huxley on 7/2/15.
@@ -114,5 +118,9 @@ public class Utils {
         }
         buffer.replace(0, 1, String.valueOf(Character.toUpperCase(buffer.charAt(0))));
         return buffer.toString();
+    }
+
+    public static User getCurrentUser() {
+        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

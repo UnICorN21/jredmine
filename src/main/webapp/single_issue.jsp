@@ -12,7 +12,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <head>
   <s:set name="menuSelected" value="'issues'"/>
 </head>
@@ -41,7 +42,7 @@
         }
       }
     %>
-    <s:if test="%{null != #session.user.id}">
+    <security:authorize access="hasRole('ROLE_USER')">
       <div class="contextual">
         <a class="icon icon-edit" onclick="util.showAndScrollTo('update'); return false;" href="">Edit</a>
         <a class="icon icon-time-add" onclick="util.showAndScrollTo('update'); return false;" href="">Log time</a>
@@ -52,8 +53,8 @@
           <a class="icon icon-fav" href="">Unwatch</a>
         </s:else>
       </div>
-    </s:if>
-    <h2>${tracker}&nbsp;&nbsp;#${id}</h2>
+    </security:authorize>
+    <h2>${trackerId}&nbsp;&nbsp;#${id}</h2>
     <div class="issue">
       <div class="subject">
         <div class="contextual next-prev-links">
@@ -80,7 +81,7 @@
         <s:if test="parent != null">
           <div>
             <p>
-              <a href="/single_issue.do?id=${parent.id}">${parent.tracker}&nbsp;&nbsp;#${parent.id}</a>
+              <a href="/single_issue.do?id=${parent.id}">${parent.trackerId}&nbsp;&nbsp;#${parent.id}</a>
               ${parent.subject}
             </p>
             <div>
@@ -191,7 +192,7 @@
         </div>
       </s:iterator>
     </div>
-    <s:if test="%{null != #session.user.id}">
+    <security:authorize access="hasRole('ROLE_USER')">
       <div id="update" style="display: none">
         <h3>Edit</h3>
         <form id="issue-form" class="edit_issue" enctype="multipart/form-data" action="/edit_issue.do" method="post">
@@ -214,9 +215,9 @@
                     Tracker
                     <span class="required">*</span>
                   </label>
-                  <s:select id="issue_tracker_id" name="formIssue.tracker" value="tracker"
-                          list="@com.unicorn.domain.Issue$Tracker@values()" requiredLabel="true"
-                          listKey="name()" listValue="desc"/>
+                  <s:select id="issue_tracker_id" name="formIssue.trackerId" value="tracker.id"
+                            list="#session.currentProject.trackers" requiredLabel="true"
+                            listKey="id" listValue="name"/>
                 </p>
                 <p>
                   <label for="issue_subject">
@@ -242,8 +243,8 @@
                           <span class="required">*</span>
                         </label>
                         <s:select id="issue_status_id" name="formIssue.status" value="status"
-                                list="@com.unicorn.domain.Issue$Status@values()" requiredLabel="true"
-                                listKey="name()" listValue="desc"/>
+                                  list="@com.unicorn.domain.Issue$Status@values()" requiredLabel="true"
+                                  listKey="name()" listValue="desc"/>
                       </p>
                       <p>
                         <label for="issue_priority_id">
@@ -257,7 +258,7 @@
                       <p>
                         <label for="issue_assignee_id">Assignee</label>
                         <s:select id="issue_assignee_id" name="formIssue.assigneeId" value="#session.user.id"
-                                list="project.developers" listKey="id" listValue="username"/>
+                                  list="project.developers" listKey="id" listValue="username"/>
                       </p>
                     </div>
                     <div class="split-content-right">
@@ -323,7 +324,7 @@
           <input type="submit" name="commit" value="submit" disabled/>
         </form>
       </div>
-    </s:if>
+    </security:authorize>
   </div>
   <script src="/static/javascripts/singleissue.js"></script>
 </section>

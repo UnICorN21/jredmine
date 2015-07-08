@@ -1,3 +1,4 @@
+<%@ page import="com.unicorn.Utils" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huxley
@@ -6,7 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <s:set name="menuItems" value="{'overview', 'activity', 'issues', 'new', 'gantt', 'calendar',
       'news', 'documents', 'wiki', 'files', 'settings'}"/>
@@ -18,32 +20,35 @@
       <div>
         <ul>
           <li><a href="/">Home</a></li>
-          <s:if test="%{null != #session.user.id}">
+          <security:authorize access="hasRole('ROLE_USER')">
             <li><a href="">My Page</a></li>
-          </s:if>
+          </security:authorize>
           <li>
             <s:a action="list" namespace="/project">
               <s:param name="clozed" value="false"/>
               Projects
             </s:a>
           </li>
-          <s:if test="%{@com.unicorn.domain.User$Role@ADMIN == #session.user.role}">
+          <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="/admin.jsp">Administration</a></li>
-          </s:if>
+          </security:authorize>
           <li><a href="http://www.redmine.org/guide">Help</a></li>
         </ul>
       </div>
       <div class="account">
         <ul>
-          <s:if test="%{null != #session.user.id}">
-            <li><a href="#">Logged in as <s:property value="#session.user.username"/></a></li>
+          <security:authorize access="hasRole('ROLE_USER')">
+            <%
+              String username = Utils.getCurrentUser().getUsername();
+            %>
+            <li><a href="#">Logged in as <%=username%></a></li>
             <li><a href="">My account</a></li>
-            <li><a href="">Sign out</a></li>
-          </s:if>
-          <s:else>
-            <li><s:a action="login" namespace="/">Sign in</s:a></li>
+            <li><s:a action="logout" namespace="/">Sign out</s:a></li>
+          </security:authorize>
+          <security:authorize access="isAnonymous()">
+            <li><a href="/login.jsp">Sign in</a></li>
             <li><a href="/register.jsp">Register</a></li>
-          </s:else>
+          </security:authorize>
         </ul>
       </div>
     </div>
@@ -55,12 +60,12 @@
           </label>
           <input type="text" name="qs" id="qs" class="small" size="20" accesskey="f">
         </form>
-        <s:if test="%{null != #session.user.id}">
+        <security:authorize access="hasRole('ROLE_USER')">
           <select name="project_quick_jump_box" id="project_quick_jump_box" onchange="if (this.value != '') { window.location = this.value; }">
             <option value>Jump to a project...</option>
             <option value disabled>---</option>
           </select>
-        </s:if>
+        </security:authorize>
       </div>
       <h1>
         <s:if test="%{null != #hideMainMenu && null != #session.currentProject}">${session.currentProject.name}</s:if>

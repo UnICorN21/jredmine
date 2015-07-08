@@ -65,17 +65,19 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         String hql = "update " + getGenericType().getSimpleName() + " set";
         boolean flag = false;
 
-        for (Pair<String, Object> pair: properties) {
+        for (int i = 0; i < properties.size(); ++i) {
+            Pair<String, Object> pair = properties.get(i);
             if (flag) hql += ", ";
             else { flag = !flag; hql += " "; }
-            hql += pair.getKey() + " = :" + pair.getKey();
+            hql += pair.getKey() + " = :p" + String.valueOf(i);
         }
         hql += " where id = :id";
         Query query = getSessionFactory().getCurrentSession().createQuery(hql);
 
-        for (Pair<String, Object> pair: properties) {
-            query.setParameter(pair.getKey(), pair.getValue());
+        for (int i = 0; i < properties.size(); ++i) {
+            query.setParameter("p" + String.valueOf(i), properties.get(i).getValue());
         }
+
         query.setParameter("id", id);
         int result = query.executeUpdate();
         getSessionFactory().getCurrentSession().clear();

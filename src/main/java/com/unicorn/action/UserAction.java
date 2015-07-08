@@ -1,5 +1,6 @@
 package com.unicorn.action;
 
+import com.unicorn.Utils;
 import com.unicorn.bean.UserInfo;
 import com.unicorn.domain.User;
 import com.unicorn.service.UserService;
@@ -35,41 +36,8 @@ public class UserAction extends BaseAction<User> {
         return user;
     }
 
-    @Action(value = "login", results = {
-            @Result(name = SUCCESS, location = "/login.jsp"),
-            @Result(name = INPUT, location = "/login.jsp")
-    })
-    public String login() {
-        boolean flag = true;
-        if (null == session.get(REDIRECTPATH)) {
-            flag = false;
-            String redirectPath = request.getHeader("referer");
-            session.put(REDIRECTPATH, redirectPath);
-        }
-
-        user = userService.userLogin(user.getUsername(), user.getPassword());
-        if (null != user) {
-            session.put(USER, user);
-
-            return SUCCESS;
-        }
-
-        if (flag) session.put(LOGIN_FAILED_FLAG, true);
-
-        return INPUT;
-    }
-
-    @Action(value = "logout", results = {
-            @Result(name = SUCCESS, location = "/index.jsp")
-    })
-    public String logout() {
-        session.remove(USER);
-
-        return SUCCESS;
-    }
-
     @Action(value = "register", results = {
-            @Result(name = SUCCESS, location = "/index.jsp"),
+            @Result(name = SUCCESS, type = "redirect", location = "/index.jsp"),
             @Result(name = INPUT,  location = "/register.jsp")
     })
     public String register() {
@@ -80,7 +48,7 @@ public class UserAction extends BaseAction<User> {
 
     @Action(value = "ajax_userinfo", results = @Result(type = "json"))
     public String ajaxUserInfo() throws Exception {
-        JSONObject json = JSONObject.fromObject(null == session.get(USER) ? new UserInfo() : new UserInfo(user));
+        JSONObject json = JSONObject.fromObject(null == Utils.getCurrentUser() ? new UserInfo() : new UserInfo(user));
         response.setContentType("text/json; charset=utf-8");
         response.getWriter().print(json);
 

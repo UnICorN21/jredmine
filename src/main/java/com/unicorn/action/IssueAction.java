@@ -1,5 +1,6 @@
 package com.unicorn.action;
 
+import com.unicorn.Utils;
 import com.unicorn.bean.FormIssue;
 import com.unicorn.bean.SimpleIssue;
 import com.unicorn.domain.Issue;
@@ -120,8 +121,8 @@ public class IssueAction extends BaseAction<Issue> {
 
     @Action(value = "edit_issue", results = @Result(type = "redirect", location = "single_issue.do?id=${formIssue.id}"))
     public String editIssue() {
-        User author = (User)session.get(UserAction.USER);
-        if (0 != loggedTime.getSpentTime()) {
+        User author = Utils.getCurrentUser();
+        if (null != loggedTime.getSpentTime() && 0 != loggedTime.getSpentTime()) {
             loggedTime.setUser(author);
             issue.setId(formIssue.getId());
             loggedTime.setIssue(issue);
@@ -140,7 +141,7 @@ public class IssueAction extends BaseAction<Issue> {
             @Result(name = SUCCESS, location = "/project_issue_new.jsp")
     })
     public String newIssue() {
-        User author = (User)session.get(UserAction.USER);
+        User author = Utils.getCurrentUser();
         try {
             issue = issueService.create(formIssue, author);
             session.put(ISSUE_CREATE_SUCCESS_FLAG, true);
