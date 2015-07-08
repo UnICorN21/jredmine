@@ -80,7 +80,7 @@ var issues = (function() {
         for(var i = 0; i < data.length; ++i) {
             var tr = document.createElement('tr');
             var trContent =
-                '<tr>' +
+                '<tr class="odd">' +
                 '<td class="checkbox">' +
                 '   <input type="checkbox" name="ids[]">' +
                 '</td>' +

@@ -3,6 +3,7 @@ package com.unicorn.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Huxley on 7/8/15.
@@ -13,7 +14,7 @@ public class GrantedAuthority implements Serializable, org.springframework.secur
     private int id;
     private User user;
     private String authority;
-    private Timestamp createTime;
+    private Timestamp createTime = new Timestamp((new Date()).getTime());
 
     public GrantedAuthority() { /* null */ }
 
