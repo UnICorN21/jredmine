@@ -3,6 +3,7 @@ package com.unicorn.bean;
 import com.unicorn.domain.Issue;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Huxley on 7/1/15.
@@ -16,6 +17,9 @@ public class SimpleIssue {
     private String tracker;
     private String updateTime;
 
+    private String startDate;
+    private String dueDate;
+
 
     public SimpleIssue(Issue issue) {
         this.id = issue.getId();
@@ -27,6 +31,8 @@ public class SimpleIssue {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.updateTime = df.format(issue.getUpdateTime());
+        this.startDate = issue.getStartDate().toString();
+        this.dueDate = null == issue.getDueDate() ? (new Date()).toString() : issue.getDueDate().toString();
     }
 
     public String getAssignee() {
@@ -83,5 +89,21 @@ public class SimpleIssue {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

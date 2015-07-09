@@ -121,6 +121,11 @@ public class Utils {
     }
 
     public static User getCurrentUser() {
-        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return user;
+        } catch (Exception e) { // no login yet
+            return null;
+        }
     }
 }

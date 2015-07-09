@@ -12,6 +12,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Huxley on 6/29/15.
@@ -20,6 +22,8 @@ import javax.annotation.Resource;
 @Scope("prototype")
 @ParentPackage("base")
 public class UserAction extends BaseAction<User> {
+    private static final String [] MENU_TEMPLATE = {"overview", "activity", "issues", "new", "gantt", "calendar",
+            "news", "documents", "wiki", "files", "settings"};
 
     public static final String USER = "user";
     public static final String REDIRECTPATH = "redirectpath";
@@ -27,6 +31,16 @@ public class UserAction extends BaseAction<User> {
     public static final String LOGIN_FAILED_FLAG = "login_failed_flag";
 
     private User user;
+
+    private Set<String> menus = new LinkedHashSet<String>();
+
+    public Set<String> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<String> menus) {
+        this.menus = menus;
+    }
 
     @Resource
     private UserService userService;
@@ -53,5 +67,18 @@ public class UserAction extends BaseAction<User> {
         response.getWriter().print(json);
 
         return null;
+    }
+
+    @Action(value = "gen_menu", results = @Result(location = "/index.jsp"))
+    public String genMenu() {
+        User user = Utils.getCurrentUser();
+
+        for (String item: MENU_TEMPLATE) menus.add(item);
+        if (null == user) {
+            menus.remove("new");
+            menus.remove("settings");
+        }
+
+        return SUCCESS;
     }
 }

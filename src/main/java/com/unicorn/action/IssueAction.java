@@ -15,6 +15,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,26 @@ public class IssueAction extends BaseAction<Issue> {
 
     private String submitType;
 
+    private Date searchStartDate;
+    private Date searchEndDate;
+
     private int pageIdx;
+
+    public Date getSearchEndDate() {
+        return searchEndDate;
+    }
+
+    public void setSearchEndDate(Date searchEndDate) {
+        this.searchEndDate = searchEndDate;
+    }
+
+    public Date getSearchStartDate() {
+        return searchStartDate;
+    }
+
+    public void setSearchStartDate(Date searchStartDate) {
+        this.searchStartDate = searchStartDate;
+    }
 
     @Override
     public Issue getModel() {
@@ -72,7 +92,7 @@ public class IssueAction extends BaseAction<Issue> {
 
     @Action(value = "ajax_issues", results = @Result(type = "json"))
     public String ajaxIssues() throws Exception {
-        List<SimpleIssue> simpleIssues = issueService.getIssues(projectId, null, 0, ITEM_PER_PAGE);
+        List<SimpleIssue> simpleIssues = issueService.getIssues(projectId, searchStartDate, searchEndDate);
 
         JSONArray json = JSONArray.fromObject(simpleIssues);
         response.setContentType("text/json; charset=utf-8");
