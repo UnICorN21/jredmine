@@ -22,7 +22,7 @@ import java.util.Set;
 @Scope("prototype")
 @ParentPackage("base")
 public class UserAction extends BaseAction<User> {
-    private static final String [] MENU_TEMPLATE = {"overview", "activity", "issues", "new", "gantt", "calendar",
+    private static final String [] MENU_TEMPLATE = {"overview", "issues", "new", "gantt", "calendar",
             "news", "documents", "wiki", "files", "settings"};
 
     public static final String USER = "user";
