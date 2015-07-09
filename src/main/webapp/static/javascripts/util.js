@@ -32,6 +32,9 @@ var util = (function() {
             } else {
                 console.error('util: Couldn\'t select the given element!')
             }
+        },
+        upperFirst: function(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
         }
     }
 })();

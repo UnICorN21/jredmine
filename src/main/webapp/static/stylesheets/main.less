@@ -78,6 +78,66 @@ div.flash {
   color: #880000;
 }
 
+#tabs {
+  position: relative;
+  ul {
+    margin: 0 0 1.2em 0;
+    padding-left: 0.5em;
+    width: 100%;
+    border-bottom: 1px solid #bbbbbb;
+    overflow: hidden;
+
+    li {
+      float:left;
+      list-style-type:none;
+      white-space:nowrap;
+      margin-right:4px;
+      background:#fff;
+      position:relative;
+      margin-bottom:-1px;
+
+      a {
+        display:block;
+        font-size: 0.9em;
+        text-decoration:none;
+        line-height:1.3em;
+        padding:4px 6px 4px 6px;
+        border: 1px solid #ccc;
+        border-bottom: 1px solid #bbbbbb;
+        background-color: #f6f6f6;
+        color:#999;
+        font-weight:bold;
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+      }
+
+      &.ui-tabs-active a {
+        background-color: #fff;
+        border: 1px solid #bbbbbb;
+        border-bottom: 1px solid #fff;
+        color:#444;
+      }
+    }
+  }
+}
+
+#calendar {
+  font-size: 14px;
+
+  .cal-float {
+    z-index: 999;
+    background: #fff;
+    border: 1px solid #444;
+    padding: 5px;
+    position: absolute;
+    width: 200px;
+    display: none;
+    opacity: 0.8;
+  }
+
+  .fc-event { cursor: pointer; }
+}
+
 header {
   position: relative;
   ul li {
@@ -234,7 +294,7 @@ header {
       white-space: nowrap;
     }
 
-    table {
+    table.norm {
       font-size: 12px;
       &.list {
         border: 1px solid #e4e4e4;
@@ -409,6 +469,14 @@ header {
   section {
     display: block;
     overflow: hidden;
+
+    p.nodata {
+      text-align: center;
+      background-color: #FFEBC1;
+      border: #FDBF3B 2px solid;
+      color: #A6750C;
+      padding: 4px 6px;
+    }
 
     .split-content {
       overflow: auto;

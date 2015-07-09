@@ -32,7 +32,7 @@
       </fieldset>
     </form>
     <div class="autoscroll">
-      <table class="list">
+      <table class="norm list">
         <thead>
         <tr>
           <th>Username</th>

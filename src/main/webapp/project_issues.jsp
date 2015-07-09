@@ -92,7 +92,7 @@
       </div>
     </form>
     <form>
-      <table id="issues-table" class="list">
+      <table id="issues-table" class="norm list">
         <thead>
         <th><a><img src="/static/images/toggle_check.png"></a></th>
         <th><a>#</a></th>

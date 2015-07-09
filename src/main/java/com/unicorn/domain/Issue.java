@@ -332,6 +332,7 @@ public class Issue implements java.io.Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "target")
+	@OrderBy("logTime")
 	public Set<History> getHistories() {
 		return histories;
 	}

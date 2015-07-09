@@ -80,7 +80,7 @@
         <s:action name="users" namespace="/admin" var="src" executeResult="false"/>
         <s:iterator value="#src.users" var="user">
           <label class="floating">
-            <input name="projectUsers" type="checkbox" value="${user.id}">
+            <input name="developerIds" type="checkbox" value="${user.id}">
             ${user.username}
           </label>
         </s:iterator>

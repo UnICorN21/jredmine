@@ -6,13 +6,14 @@ import com.unicorn.domain.Issue;
 import com.unicorn.domain.LogTime;
 import com.unicorn.domain.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Huxley on 6/30/15.
  */
 public interface IssueService {
-    List<SimpleIssue> getIssues(String projectId, List<String> constraints, int pageIdx, int itemPerPage);
+    List<SimpleIssue> getIssues(String projectId, Date startDate, Date endDate);
 
     Issue getIssue(int issueId);
 

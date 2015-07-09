@@ -18,7 +18,7 @@
     </div>
     <h2>Groups</h2>
     <div class="autoscroll">
-      <table class="list">
+      <table class="norm list">
         <thead>
         <tr>
           <th>Group</th>

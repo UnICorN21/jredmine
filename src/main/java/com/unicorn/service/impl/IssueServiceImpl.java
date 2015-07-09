@@ -33,7 +33,7 @@ public class IssueServiceImpl implements IssueService {
     private String lastProjectIdForIssue;
 
     // TODO: Add `contstraints` support
-    public List<SimpleIssue> getIssues(String projectId, List<String> constraints, int pageIdx, int itemPerPage) {
+    public List<SimpleIssue> getIssues(String projectId, Date startDate, Date endDate) {
         Map<String, Object> priorities = new HashMap<String, Object>();
         priorities.put("project.id", projectId);
 

@@ -65,6 +65,39 @@ public class ProjectServiceImpl implements ProjectService {
         return create(project);
     }
 
+    public Project update(Project project, String managerId, String[] developerIds, int[] trackerIds, String parentId) {
+        Project target = getProject(project.getId());
+        target.setIsPublic(project.getIsPublic());
+        target.setDescription(project.getDescription().trim());
+        target.setName(project.getName());
+
+        if (null != parentId) {
+            Project parent = getProject(parentId);
+            target.setParent(parent);
+        }
+
+        User manager = userDao.get(User.class, managerId);
+        target.setUserByManager(manager);
+
+        Set<User> developers = new HashSet<User>();
+        for (int i = 0; i < developerIds.length; ++i) {
+            User developer = userDao.get(User.class, developerIds[i]);
+            developers.add(developer);
+        }
+        target.setDevelopers(developers);
+
+        Set<Tracker> trackers = new HashSet<Tracker>();
+        for (int i = 0; i < trackerIds.length; ++i) {
+            Tracker tracker = trackerDao.get(Tracker.class, trackerIds[i]);
+            trackers.add(tracker);
+        }
+        target.setTrackers(trackers);
+
+        projectDao.update(target);
+
+        return target;
+    }
+
     public void delete(String id) {
         projectDao.delete(Project.class, id);
     }

@@ -7,6 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<head>
+  <s:set name="menuSelected" value="'gantt'"/>
+</head>
 
 <section class="gantt">
   <aside></aside>

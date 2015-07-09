@@ -74,7 +74,8 @@
       <s:if test="!#hideMainMenu">
         <div class="main-menu">
           <ul>
-            <s:iterator value="#menuItems" var="item">
+            <s:action name="gen_menu" namespace="/" var="src" executeResult="false"/>
+            <s:iterator value="#src.menus" var="item">
               <s:if test="%{#menuSelected == #item}">
                 <li class="selected">
               </s:if>

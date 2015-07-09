@@ -35,12 +35,14 @@ public class ProjectAction extends BaseAction<Project> {
     private String parentId;
     private boolean inherit;
 
+    private String managerId;
+
     private String submitType;
 
     private List<Project> projectList;
 
     private int[] trackerIds;
-    private String[] userIds;
+    private String[] developerIds;
 
     private boolean clozed;
 
@@ -60,6 +62,14 @@ public class ProjectAction extends BaseAction<Project> {
         this.parentId = parentId;
     }
 
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
+    }
+
     public boolean isInherit() {
         return inherit;
     }
@@ -76,12 +86,12 @@ public class ProjectAction extends BaseAction<Project> {
         this.trackerIds = trackers;
     }
 
-    public String[] getProjectUsers() {
-        return userIds;
+    public String[] getDeveloperIds() {
+        return developerIds;
     }
 
-    public void setProjectUsers(String[] userIds) {
-        this.userIds = userIds;
+    public void setDeveloperIds(String[] developers) {
+        developerIds = (String[]) developers;
     }
 
     @Override
@@ -162,7 +172,7 @@ public class ProjectAction extends BaseAction<Project> {
         User manager = Utils.getCurrentUser();
         project.setUserByManager(manager);
         try {
-            project = projectService.create(project, trackerIds, userIds);
+            project = projectService.create(project, trackerIds, developerIds);
             session.put(CURRENT_PROJECT, project);
             session.put(PROJECT_CREATE_SUCCESS_FLAG, true);
         } catch (Exception e) {
@@ -193,6 +203,12 @@ public class ProjectAction extends BaseAction<Project> {
             e.printStackTrace();
         }
 
+        return SUCCESS;
+    }
+
+    @Action(value = "edit", results = @Result(type = REDIRECT, location = "/project/overview.do?id=${id}"))
+    public String edit() {
+        project = projectService.update(project, managerId, developerIds, trackerIds, 0 == parentId.length() ? null : parentId);
         return SUCCESS;
     }
 

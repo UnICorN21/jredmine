@@ -10,8 +10,10 @@
         <http auto-config="true" use-expressions="true">
                 <intercept-url pattern="/admin.jsp" access="hasRole('ROLE_ADMIN')"/>
                 <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')"/>
+                <intercept-url pattern="/project/settings.do" access="hasRole('ROLE_ADMIN')"/>
                 <intercept-url pattern="/*_new.jsp" access="hasRole('ROLE_USER')"/>
-                <intercept-url pattern="/project/new*" access="hasRole('ROLE_USER')"/>
+                <intercept-url pattern="/project/new.do" access="hasRole('ROLE_USER')"/>
+
                 <intercept-url pattern="/*" access="permitAll"/>
                 <csrf disabled="true"/>
                 <form-login login-page="/login.jsp"

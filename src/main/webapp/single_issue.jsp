@@ -113,7 +113,7 @@
         Updated
         <a href="/project/activity.do?from=<%=updatetime%>"><%=updateAgo%> ago.</a>
       </p>
-      <table class="attributes">
+      <table class="norm attributes">
         <tbody>
         <tr>
           <th class="status">Status:</th>
