@@ -53,7 +53,7 @@
           </p>
           <p>
             <label for="issue_description">Description</label>
-            <input id="issue_description" name="formIssue.description" size="80" maxlength="255" type="text">
+            <textarea id="issue_description" name="formIssue.description" rows="6" cols="78" wrap="hard"></textarea>
           </p>
           <div id="attributes" class="attributes">
             <div class="split-content">

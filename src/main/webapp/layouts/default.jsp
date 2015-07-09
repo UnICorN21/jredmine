@@ -11,14 +11,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="/static/stylesheets/normalize.css"/>
-  <link rel="stylesheet/less" type="text/css" href="/static/stylesheets/main.less"/>
-  <script src="/static/javascripts/less.min.js"></script>
-  <script src="/static/javascripts/jquery-1.11.3.min.js"></script>
-  <script src="/static/javascripts/jquery.validate.min.js"></script>
-  <title>JRedmine</title>
+  <jsp:include page="../includes/head.jsp"/>
 </head>
 <body>
 <decorator:head/>

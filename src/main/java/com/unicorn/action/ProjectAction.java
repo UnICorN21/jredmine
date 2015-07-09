@@ -40,6 +40,7 @@ public class ProjectAction extends BaseAction<Project> {
     private List<Project> projectList;
 
     private int[] trackerIds;
+    private String[] userIds;
 
     private boolean clozed;
 
@@ -73,6 +74,14 @@ public class ProjectAction extends BaseAction<Project> {
 
     public void setProjectTrackers(int[] trackers) {
         this.trackerIds = trackers;
+    }
+
+    public String[] getProjectUsers() {
+        return userIds;
+    }
+
+    public void setProjectUsers(String[] userIds) {
+        this.userIds = userIds;
     }
 
     @Override
@@ -153,7 +162,7 @@ public class ProjectAction extends BaseAction<Project> {
         User manager = Utils.getCurrentUser();
         project.setUserByManager(manager);
         try {
-            project = projectService.create(project, trackerIds);
+            project = projectService.create(project, trackerIds, userIds);
             session.put(CURRENT_PROJECT, project);
             session.put(PROJECT_CREATE_SUCCESS_FLAG, true);
         } catch (Exception e) {

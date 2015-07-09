@@ -15,7 +15,6 @@
 
 <div class="main">
   <div class="content" style="width: 100%">
-    <s:debug/>
     <h2>New Project</h2>
     <%
       Object updateFlag = Utils.getSessionAttrAndRemoved(session, ProjectAction.PROJECT_CREATE_SUCCESS_FLAG);
@@ -42,7 +41,7 @@
         </p>
         <p>
           <label for="project_description">Description</label>
-          <input id="project_description" size="60" type="text" name="description">
+          <textarea id="project_description" name="description" rows="6" cols="58" wrap="hard"></textarea>
         </p>
         <p>
           <s:checkbox name="isPublic" fieldValue="true" label="Public" value="true"/>
@@ -74,6 +73,16 @@
               ${tracker.name}
             </label>
           </s:else>
+        </s:iterator>
+      </fieldset>
+      <fieldset class="box tabular developers">
+        <legend>Developers</legend>
+        <s:action name="users" namespace="/admin" var="src" executeResult="false"/>
+        <s:iterator value="#src.users" var="user">
+          <label class="floating">
+            <input name="projectUsers" type="checkbox" value="${user.id}">
+            ${user.username}
+          </label>
         </s:iterator>
       </fieldset>
       <input type="submit" name="submitType" value="Create">

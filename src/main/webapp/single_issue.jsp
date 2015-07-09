@@ -154,7 +154,7 @@
       <hr>
       <div class="description">
         <h3>Description</h3>
-        <div>${description}</div>
+        <div id="description-body">${description}</div>
       </div>
     </div>
     <div id="history">

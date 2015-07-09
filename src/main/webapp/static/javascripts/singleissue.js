@@ -12,6 +12,9 @@ var singleIssue = (function() {
         $('#issue_show_done_radio').html(value);
     });
 
+    var description = document.querySelector('#description-body');
+    description.innerHTML = marked(description.innerHTML);
+
     util.checkForm('issue-form');
 
     util.dismiss('div.flash');

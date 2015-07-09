@@ -16,7 +16,7 @@ public interface ProjectService {
 
     Project create (Project project);
 
-    Project create (Project project, int[] trackerIds);
+    Project create (Project project, int[] trackerIds, String[] userIds);
 
     void delete(String id);
 }
