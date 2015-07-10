@@ -68,13 +68,34 @@ public class Project implements java.io.Serializable, Cloneable {
 	public Project clone() throws CloneNotSupportedException {
 		Project project = (Project)super.clone();
 		project.setId(null);
-		project.setName(name + "_copy");
-		project.setProjects(new HashSet<Project>(projects));
-		project.setIssues(new HashSet<Issue>(issues));
+		project.setName(name + "_copy_ " + (new Date()).toString());
+		project.setCreateTime(new Timestamp((new Date()).getTime()));
 		project.setDevelopers(new HashSet<User>(developers));
 		project.setCategories(new HashSet<Category>(categories));
 		project.setTargetVersions(new HashSet<TargetVersion>(targetVersions));
 		project.setTrackers(new HashSet<Tracker>(trackers));
+
+		Set<Project> projects = new HashSet<Project>();
+		for (Project p: this.projects) {
+			projects.add(p.clone());
+		}
+		project.setProjects(projects);
+
+		Set<Issue> issues = new HashSet<Issue>();
+		for (Issue iss: this.issues) {
+			Issue is = new Issue();
+			is.setProject(project);
+			is.setSubject(iss.getSubject());
+			is.setDescription(iss.getDescription());
+			is.setCategory(iss.getCategory());
+			is.setTracker(iss.getTracker());
+			is.setUserByAssigner(iss.getUserByAssigner());
+			is.setAssignee(iss.getAssignee());
+			is.setPriority(iss.getPriority());
+			issues.add(is);
+		}
+		project.setIssues(issues);
+
 		return project;
 	}
 
@@ -176,7 +197,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.issues = issues;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "project_user_map", joinColumns = { @JoinColumn(name = "projectid") },
 	inverseJoinColumns = { @JoinColumn(name = "userid") })
 	public Set<User> getDevelopers() {
@@ -187,7 +208,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.developers = developers;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "tracker_project_map", joinColumns = { @JoinColumn(name = "pid") },
 	inverseJoinColumns = { @JoinColumn(name = "tid") })
 	public Set<Tracker> getTrackers() {

@@ -23,7 +23,7 @@ public class SimpleIssue {
 
     public SimpleIssue(Issue issue) {
         this.id = issue.getId();
-        this.assignee = issue.getUserByAssignee().getUsername();
+        this.assignee = issue.getAssignee().getUsername();
         this.subject = issue.getSubject();
         this.priority = issue.getPriority().getDesc();
         this.status = issue.getStatus().getDesc();

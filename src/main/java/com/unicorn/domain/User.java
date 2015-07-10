@@ -133,7 +133,7 @@ public class User implements java.io.Serializable, UserDetails {
 		this.lastConnectionTime = lastConnectionTime;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userByAssignee")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "assignee")
 	public Set<Issue> getIssuesForAssignee() {
 		return this.issuesForAssignee;
 	}

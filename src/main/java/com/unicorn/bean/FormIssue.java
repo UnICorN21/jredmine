@@ -33,7 +33,7 @@ public class FormIssue {
         this.subject = issue.getSubject();
         this.status = issue.getStatus();
         this.priority = issue.getPriority();
-        this.assigneeId = issue.getUserByAssignee().getId();
+        this.assigneeId = issue.getAssignee().getId();
         this.startDate = issue.getStartDate();
         this.dueDate = issue.getDueDate();
         this.estimatedTime = issue.getEstimatedTime();

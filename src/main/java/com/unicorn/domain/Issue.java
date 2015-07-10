@@ -49,18 +49,18 @@ public class Issue implements java.io.Serializable {
 	private User userByAssigner;
 	private Issue parent;
 	private Project project;
-	private User userByAssignee;
+	private User assignee;
 	private String subject;
 	private String description;
 	private Priority priority;
-	private Status status;
+	private Status status = Status.New;
 	private Tracker tracker;
-	private Timestamp createTime;
-	private Timestamp updateTime;
-	private Date startDate;
+	private Timestamp createTime = new Timestamp((new Date()).getTime());
+	private Timestamp updateTime = new Timestamp((new Date()).getTime());
+	private Date startDate = new Timestamp((new Date()).getTime());;
 	private Date dueDate;
 	private Double estimatedTime;
-	private Integer progress;
+	private Integer progress = 0;
 	private String category;
 	private Integer targetVersion;
 	private Set<Issue> issues = new HashSet<Issue>(0);
@@ -80,8 +80,8 @@ public class Issue implements java.io.Serializable {
 
 	public Issue(FormIssue formIssue, User author) {
 		this.userByAssigner = author;
-		this.userByAssignee = new User();
-		this.userByAssignee.setId(formIssue.getAssigneeId());
+		this.assignee = new User();
+		this.assignee.setId(formIssue.getAssigneeId());
 		this.project = new Project();
 		this.project.setId(formIssue.getProjectId());
 		this.subject = formIssue.getSubject();
@@ -109,7 +109,7 @@ public class Issue implements java.io.Serializable {
 			Integer progress) {
 		this.userByAssigner = userByAssigner;
 		this.project = project;
-		this.userByAssignee = userByAssignee;
+		this.assignee = userByAssignee;
 		this.subject = subject;
 		this.priority = priority;
 		this.status = status;
@@ -130,7 +130,7 @@ public class Issue implements java.io.Serializable {
 		this.userByAssigner = userByAssigner;
 		this.parent = parent;
 		this.project = project;
-		this.userByAssignee = userByAssignee;
+		this.assignee = userByAssignee;
 		this.subject = subject;
 		this.description = description;
 		this.priority = priority;
@@ -192,12 +192,12 @@ public class Issue implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "assignee", nullable = false)
-	public User getUserByAssignee() {
-		return this.userByAssignee;
+	public User getAssignee() {
+		return this.assignee;
 	}
 
-	public void setUserByAssignee(User userByAssignee) {
-		this.userByAssignee = userByAssignee;
+	public void setAssignee(User userByAssignee) {
+		this.assignee = userByAssignee;
 	}
 
 	@Column(name = "subject", nullable = false)
