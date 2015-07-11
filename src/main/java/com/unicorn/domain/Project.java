@@ -197,7 +197,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.issues = issues;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "project_user_map", joinColumns = { @JoinColumn(name = "projectid") },
 	inverseJoinColumns = { @JoinColumn(name = "userid") })
 	public Set<User> getDevelopers() {
@@ -208,7 +208,7 @@ public class Project implements java.io.Serializable, Cloneable {
 		this.developers = developers;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tracker_project_map", joinColumns = { @JoinColumn(name = "pid") },
 	inverseJoinColumns = { @JoinColumn(name = "tid") })
 	public Set<Tracker> getTrackers() {
